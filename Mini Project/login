@@ -1,0 +1,30 @@
+import mysql.connector
+conn = mysql.connector.connect(
+    host='localhost', database='book_store', user='root', password='Sakshi500604')
+
+if conn.is_connected():
+    print("Connection established...!!")
+
+
+cursor = conn.cursor()
+sql = "SELECT * FROM book_store.users"
+# Executing the query
+cursor.execute(sql)
+
+# Fetching 1st row from the table
+result = cursor.fetchall()
+print(result)
+# ii. Take input from the user and add it to the database
+user_id = input("Enter user_id: ")
+user_password = input('Enter user_password: ')
+
+print(user_id, user_password)
+sql =( "INSERT INTO users(user_id,user_password)"
+"VALUES(%s,%s)")
+data = (user_id,user_password)
+cursor.execute(sql, data)
+conn.commit()
+print(cursor.rowcount, "record inserted.")
+
+
+
