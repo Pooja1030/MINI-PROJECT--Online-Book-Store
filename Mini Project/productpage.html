@@ -20,46 +20,77 @@
 
 </head>
 <body>
-  
-  <section id="header">
-    <div class="nav">
-        <nav class="navbar navbar-expand-lg">
-          <!-- <a class="navbar-brand" href="#"><img src=" " alt="logo" /></a> -->
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse " style="margin-left: 800px;" id="navbarNav">
-            <div class="mr-auto" ></div>
-            <ul class="navbar-nav" >
-              <li class="nav-item active">
-                <a class="nav-link" style="color: black;" href="#"
-                  >Home <span class="sr-only">(current)</span></a
-                >
-              </li>
-              <li class="nav-item">
-                <a class="nav-link"  style="color: black;" href="Features.html">Books</a>
-              </li>
-            </ul>
-            <div class="div">
-            <div class="search-container right-element ml-3 mr-4"><input class="" type="search" placeholder="Search" id="searchField" autocomplete="off" value="">
-              <div class="searchIcon"><i class="search-icon"></i></div></div></div>
-      
-            <!-- <button type="button" historyparams="[object Object]" class="subscribe-btn  btn-primary right-element mr-3">Subscribe</button> -->
-            <div class="right-element user-profile">
-              <div role="presentation" class="signIn" style="color: rgb(21, 17, 17)" ><a href="loginpage.html" style="color: black;">Login </a> </div></div>
-              <div role="presentation" class="signIn" style="color: rgb(21, 17, 17)" ><a href="Signup.html" style="color: black; margin-left: 12px;">Signup</a> </div></div>
-          </div>
+  <div class="wrapper">
+  <!-- Header Start -->
+  <header class="header ">
+    <div class="nav ">
+      <nav class="navbar navbar-expand-lg">
+        <a class="navbar-brand" href="#"><img src="logo.svg" alt="logo" style="width: 200px; margin-top: -10px; margin-left: 60px;"/></a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse " id="navbarNav">
+          <div class="mr-auto" ></div>
+          <ul class="navbar-nav " >
+            <li class="nav-item active">
+              <a class="nav-link" style="color: #000;" href="#"
+                >Home <span class="sr-only">(current)</span></a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link"  style="color: #000;" href="Features.html">Books</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link"  style="color: #000;" href="Addtocartpage.html">Cart</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link"  style="color: #000;" href="loginpage.html">Login</a>
+            </li>
+            
+              
+          </ul>
         </nav>
-      </div>
-</section>
+          <div class="header__main-right">
+            <div class="header-toolbar-wrap">
+                <div class="header-toolbar">
+                    <div class="header-toolbar__item header-toolbar--search-btn">
+                        <a href="#searchForm" class="header-toolbar__btn toolbar-btn">
+                            <i class="fas fa-search" style="color: rgb(25, 22, 22);"></i>
+                        </a>
+                    </div>
+                    <div class="header-toolbar__item header-toolbar--minicart-btn">
+                        <a href="Addtocartpage.html" class="header-toolbar__btn toolbar-btn">
+                          <i class="fas fa-thin fa-cart-shopping" style="color: rgb(34, 34, 34);"></i>
+                            <span>0</span>
+                        </a>
+                    </div>
+                    <div class="header-toolbar__item d-block d-lg-none">
+                        <a href="#offcanvasMenu" class="header-toolbar__btn toolbar-btn menu-btn">
+                            <div class="hamburger-icon">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div> 
+      
+                           
+                        <!-- </div> -->
+</header>
 
 
 
@@ -88,14 +119,117 @@
                   <button type = "button" class = "buy-now-btn"><i class = "fas fa-wallet"></i>buy now</button>
               </div>
           </div>
+          <div class="product-div-bottom">
+            <div class="row justify-content-center mb--77 mb-md--57">
+              <div class="col-12">
+                <div class="tab-style-2">
+                  <div class="nav nav-tabs mb--35 mb-sm--25" id="product-tab" role="tablist">
+                    <button type="button" class="nav-link active" id="nav-description-tab" data-bs-toggle="tab" data-bs-target="#nav-description" role="tab" aria-selected="true">
+                      <span>Description</span>
+                    </button>
+                    <button type="button" class="nav-link" id="nav-info-tab" data-bs-toggle="tab" data-bs-target="#nav-info" role="tab" aria-selected="true">
+                      <span>Additional Information</span>
+                    </button>
+                    <button type="button" class="nav-link" id="nav-reviews-tab" data-bs-toggle="tab" data-bs-target="#nav-reviews" role="tab" aria-selected="true">
+                      <span>Reviews(0)</span>
+                    </button>
+                  </div>
+                  <div class="tab-content" id="product-tabContent">
+                    <div class="tab-pane fade show active" id="nav-description" role="tabpanel" aria-labelledby="nav-description-tab">
+                      <div class="product-description">
+                        <p>
+                          "Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                           Molestias esse fugit tempora sit modi, quaerat sequi exercitationem 
+                          labore veritatis itaque necessitatibus rem architecto! Vel, quisquam.
+                           Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ab voluptas 
+                           at omnis error delectus! Quis nihil esse 
+                          iusto aspernatur consequatur quo, in laboriosam hic. Illo!...."
+                        </p>
+                      </div>
+                    </div>
+                    <div class="tab-pane fade" id="nav-info" role="tabpanel" aria-labelledby="nav-info-tab">
+                      <div class="table-content table-responsive">
+                        <p>
+                          " Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                          Eum ipsa quo consequuntur, asperiores illo ipsum similique 
+                          dignissimos doloribus iste, expedita facere reiciendis eos minima quae distinctio corporis 
+                          soluta totam necessitatibus esse accusantium non aliquid incidunt.
+                           Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                           Reiciendis nostrum totam explicabo incidunt esse! Autem nostrum totam qui 
+                           laboriosam, voluptate voluptas ipsa optio consequuntur, doloribus blanditiis 
+                          eos consequatur sunt quam delectus magni. Quas, adipisci molestiae?.... "
+                        </p>
+                      </div>
+                    </div>
+                    <div class="tab-pane fade" id="nav-reviews" role="tabpanel" aria-labelledby="nav-reviews-tab">
+                      <div class="product reviews">
+                        <h4 class="review__title">0 Rating for Creamfilled Donut</h4>
+                        <div class="review-form-wrapper">
+                          <div class="row">
+                            <div class="col-lg-8">
+                              <span class="reply-title">Add a review</span>
+                              <form action method="POST" class="form" style="padding-right: 30px;">
+                                <input type="hidden" name="csrfmiddlewaretoken" value="iZqSzUnsYY3uvcpE2kII4Df34PKxOtdw0qEwZi8GvUwjj4eTqhaRkhaaUTm0iNph">
+                                <div class="form__group" style="margin-bottom: 10px;padding-bottom: 1px;">
+                                  <div class="rating">
+                                    <input class="star star-5" id="star-5" value="5" type="radio" name="rating">
+                                    <label class="star star-5" for="star-5"></label>
+                                    <input class="star star-4" id="star-4" value="5" type="radio" name="rating">
+                                    <label class="star star-4" for="star-4"></label>
+                                    <input class="star star-3" id="star-3" value="5" type="radio" name="rating">
+                                    <label class="star star-3" for="star-3"></label>
+                                    <input class="star star-2" id="star-2" value="5" type="radio" name="rating">
+                                    <label class="star star-2" for="star-2"></label>
+                                    <input class="star star-1" id="star-1" value="5" type="radio" name="rating">
+                                    <label class="star star-1" for="star-1"></label>
+                                  </div>
+                                </div>
+                                <div class="form__group " style="margin-bottom:20px">
+                                  <label  class="form__label d-block"  for="name">
+                                    "Review Title"
+                                    <span class="required">*
+                                    </span>
+                                  </label>
+                                  <input type="text" name="subject" id="name" class="form__input">
+                                </div>
+                                <div class="form__group " style="margin-bottom: 10px;">
+                                  <label  class="form__label d-block"  for="email">
+                                    "Your Review"
+                                    <span class="required">*
+                                    </span>
+                                  </label>
+                                  <textarea name="review" id="review" class="form__input form__input--textarea"></textarea>
+                                </div>
+                                <p>You must purchase this product to post a review.</p>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
       </div>
   </div>
 </div>
 
 
+<script>
+  
+
+
+</script>
+
+
 
 
 <style>
+
+
+
   
 img{
     width: 100%;
@@ -114,8 +248,8 @@ img{
     margin: 0 auto;
 }
 .product-div{
-  height: 500px;
-    margin: 1rem 0;
+  height: 394px;
+    margin: -23rem 0;
     padding: 2rem 0;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -247,6 +381,80 @@ img{
         margin-bottom: 10px;
     }
 }
+
+
+
+
+.col-12 {
+      flex: 0 0 auto;
+      width: 100%
+}
+.tab-style-2{
+  margin-top: 33px;
+}
+.tab-style-2 .nav-tabs {
+    border-bottom: 1px solid #dddddd;
+    padding-bottom: 20px;
+    margin-bottom: 35px;
+}
+.tab-style-2 .nav-link.active {
+  border-color: #292323;
+}
+
+.tab-style-2 .nav-link.active, .shop-widget .widget-title:after {
+  background-color: #292323;
+}
+.tab-style-2 .nav-link:not(:last-child) {
+  margin-right: 5px;
+}
+.nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+  color: #495057;
+  background-color: #fff;
+  border-color: #dee2e6 #dee2e6 #fff;
+}
+.tab-style-2 .nav-link {
+  border: 1px solid #dddddd;
+  padding: 11px 15px;
+  color: #404040;
+  font-weight: bold;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
+}
+
+.product-reviews .review__title {
+  font-size: 36px;
+  letter-spacing: -2px;
+  margin-bottom: 30px;
+}
+.review-form-wrapper .reply-title {
+  color: #262626;
+}
+
+.product-summary .product-navigation a.next {
+  margin-left: 5px;
+}
+.product-summary .product-title {
+  font-size: 35px;
+}
+.product-price-wrapper {
+  line-height: 1.5;
+}
+
+
+
+.row {
+    --bs-gutter-x: 30px;
+    --bs-gutter-y: 0;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: calc(var(--bs-gutter-y) * -1);
+    margin-right: calc(var(--bs-gutter-x) * -.5);
+    margin-left: calc(var(--bs-gutter-x) * -.5);
+}
+
 </style>
 
 
@@ -260,47 +468,54 @@ img{
     <!-- Footer -->
 
     <footer class="a-footer">
-        <div class="container">
-          <div class="row">
-            <div class="footer-col">
-              <h4>Help</h4>
-              <ul>
-                <li><a href="#">Payment</a></li>
-                <li><a href="#">Delivery</a></li>
-                <li><a href="#">Return of books</a></li>
-              </ul>
-            </div>
-            <div class="footer-col">
-              <h4>About</h4>
-              <ul>
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">History</a></li>
-                <li><a href="#">Privacy policy</a></li>
-              </ul>
-            </div>
-            <div class="footer-col">
-              <h4>Catalog</h4>
-              <ul>
-                <li><a href="#">New Arrivals</a></li>
-                <li><a href="#">Bestsellers</a></li>
-                <li><a href="#">Classics</a></li>
-              </ul>
-            </div>
-            <div class="footer-col">
-              -->
-              <h4>Contact</h4>
-              <div class="social-links">
-                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-linkedin"></i></a>
-              </div>
+      <div class="container">
+        <div class="row">
+          <div class="footer-col">
+            <h4>Help</h4>
+            <ul>
+              <li><a href="#">Payment</a></li>
+              <li><a href="#">Delivery</a></li>
+              <li><a href="#">Return of books</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>About</h4>
+            <ul>
+              <li><a href="#">About Us</a></li>
+              <li><a href="#">History</a></li>
+              <li><a href="#">Privacy policy</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Catalog</h4>
+            <ul>
+              <li><a href="#">New Arrivals</a></li>
+              <li><a href="#">Bestsellers</a></li>
+              <li><a href="#">Classics</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Contact</h4>
+            <div class="social-links">
+              <a href="#"><i class="fab fa-facebook-f"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+              <a href="#"><i class="fab fa-linkedin"></i></a>
             </div>
           </div>
         </div>
-      </footer>
-  
+      </div>
+    </footer>
+  </div>
+
+
+      <script>
+        document.body.addEventListener('htmx:configRequest', (event) => {
+          event.detail.headers['X-CSRFToken'] = 'wvGr6B4cuGFydUfNh8IeEooxCuxK9YUmxo9YVU9SDufYqSjVUUIsdyOGEXuGaLju';
+        })
+      </script>
       <script src="script.js"></script>
+      <script src="vendor.js"></script>
   
       <!-- Optional JavaScript -->
       <!-- jQuery first, then Popper.js, then Bootstrap JS -->
