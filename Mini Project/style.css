@@ -1242,14 +1242,44 @@ button:not(:disabled),
   line-height: 34px;
 }
 
-.pagination {
-  margin-left: -180px;
+
+.wrappera ul {
   display: flex;
-  padding-left: 0;
-  list-style: none;
+  background-color: rgb(8,140,248);
+  padding: 8px;
+  border-radius: 41px;
+  width: 376px;
+  margin-left: 146px;
 }
-.pagination li:not(:last-child) {
-  margin-right: -20px;
+.wrappera ul li{
+	list-style-type: none;
+	line-height: 55px;
+	text-align: center;
+	font-size: 18px;
+	font-weight: 600;
+	cursor: pointer;
+	background-color: #000;
+	margin: 10px;
+	border-radius: 50px;
+	color: #fff;
+	padding: 10px;
+}
+.wrappera ul li.numb{
+	height: 75px;
+	width: 60px;
+}
+.wrappera ul li.btn{
+	line-height: 60px;
+	font-size: 22px;
+}
+.wrappera ul li.btn:hover{
+	background-color: transparent;
+	border: 1px solid #fff;
+}
+.wrappera ul li.active{
+	background-color: #fff;
+	color: #000;
+	box-shadow: 0 0 20px;
 }
 
 .shop-widget .widget-title::after {
