@@ -639,17 +639,25 @@
 
                         </div>
                     </div>
-                         <div class="wrappera">
-                    <ul>
-                        <li class="btn"><i class="fas fa-angle-left"></i></li>
-                        <li class="numb active"><span>1</span></li>
-                        <li class="numb"><span>2</span></li>
-                        <li class="numb"><span>3</span></li>
-                        <li class="numb"><span>4</span></li>
-                        <li class="numb"><span>5</span></li>
-                        <li class="btn"><i class="fas fa-angle-right"></i></li>
-                    </ul>
-                </div>
+                         <div class="pgn">
+                        <button type="button" class="prev"><i class="fa fa-angle-left"></i></button>
+                        <button type="button" class="next"><i class="fa fa-angle-right"></i></button>
+                        <div class="pages">
+                            <div class="page-container">
+                                <button type="button" class="btn-page active">1</button>
+                                <button type="button" class="btn-page">2</button>
+                                <button type="button" class="btn-page">3</button>
+                                <button type="button" class="btn-page">4</button>
+                                <button type="button" class="btn-page">5</button>
+                                <button type="button" class="btn-page">6</button>
+                                <button type="button" class="btn-page">7</button>
+                                <button type="button" class="btn-page">8</button>
+
+                            </div>
+                        </div>
+                    </div>
+                
+                  
                     
                     
                     </div>
@@ -931,6 +939,59 @@
 } 
 
 
+.pgn{
+    width: 320px;
+    background: #fff;
+    border-radius: 40px;
+    min-height: 40px;
+    overflow-x: hidden;
+    position: relative;
+}
+.prev{
+    position: absolute;
+    left: 0;
+    z-index: 2;
+}
+.next{
+    position: absolute;
+    right: 0;
+    z-index: 2;
+}
+.btn-page,
+.prev,
+.next{
+    height: 40px;
+    width: 40px;
+    border-radius: 40px;
+    border: none;
+    outline: none;
+    background: #fff;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all .3s ease-in-out;
+    font-size: 15px;
+    color: #777;
+}
+.btn-page:hover,
+.prev:hover,    
+.next:hover
+{
+    color: #fff !important;
+    background: linear-gradient(45deg, #4173ff, #ac60ff);
+}
+.pages{
+    position: absolute;
+    left: 40px;
+    transition: all .3s ease-in-out;
+}
+.page-container{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+
+
 </style>
   <script src="script.js"></script>
   <script src="vendor.js"></script>
@@ -957,7 +1018,49 @@
 
   <!-- <div class="alertify-notifier ajs-top ajs-right"><div class="ajs-message ajs-success">The item is added to your Wishlist</div></div> -->
 
+ <script>
+    var count = 0;
+    var pages = document.getElementsByClassName("pages")[0];
+    var buttons = pages.getElementsByClassName("btn-page");
 
+    document.getElementsByClassName("prev")[0].addEventListener('click', prevClick);
+    document.getElementsByClassName("next")[0].addEventListener('click', nextClick);
+
+    for (let i = 0; i < buttons.length; i++) {
+        buttons[i].addEventListener("click", btnClick)
+    }
+
+    function nextClick() {
+        buttons[count].classList.remove("active");
+        if (count !== buttons.length - 1) {
+            count++;
+        }
+        buttons[count].classList.add("active");
+        if (count <= buttons.length - 6) {
+            pages.style.left = - (count - 1) * 40 + "px";
+        }
+    }
+
+    function prevClick() {
+        buttons[count].classList.remove("active");
+        if (count !== 0) {
+            count--;
+        }
+        buttons[count].classList.add("active");
+        if (count < buttons.length - 6) {
+            pages.style.left = -(count - 1) * 40 + "px";
+        }
+    }
+
+    function btnClick() {
+        buttons[count].classList.remove("active");
+        count = this.innerHTML - 1;
+        if (count <= buttons.length - 6) {
+            pages.style.left = - (count - 1) * 40 + "px";
+        }
+        buttons[count].classList.add("active");
+    }
+</script>
 
 </body>
 </html>
