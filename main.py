@@ -27,29 +27,33 @@ def shop():
     # Fetch one record and return result
     books = cursor.fetchall()
 
-    return render_template('shop.html', books=books)
+    if 'loggedin' in session:
+        return render_template('shop1.html', books=books)
+    else:
+        return render_template('shop.html', books=books)
 
 
 @app.route('/shop/<isbn>')
 def productpage(isbn):
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cursor.execute('SELECT isbn, book_title, book_author, price, Image_URL_L, year_of_publication FROM books_data WHERE isbn = %s',[isbn])
+    cursor.execute(
+        'SELECT isbn, book_title, book_author, price, Image_URL_L, year_of_publication FROM books_data WHERE isbn = %s', [isbn])
     book = cursor.fetchone()
 
-    wishlist_btn='Add to wishlist'
+    wishlist_btn = 'Add to wishlist'
     if 'loggedin' in session:
-        cursor.execute('SELECT isbn FROM wishlist where isbn=%s and user_id=%s', (isbn,session['id']))
-                # Fetch one record and return result
+        cursor.execute(
+            'SELECT isbn FROM wishlist where isbn=%s and user_id=%s', (isbn, session['id']))
+        # Fetch one record and return result
         wishlist_book = cursor.fetchone()
         if wishlist_book:
-            wishlist_btn='Remove from wishlist'
+            wishlist_btn = 'Remove from wishlist'
         else:
-            wishlist_btn='Add to wishlist'
-            
+            wishlist_btn = 'Add to wishlist'
 
     cursor.execute(
-    'SELECT book_title, book_author, Image_URL_L, price FROM books_data where Year_of_Publication=%s limit 8 ',[book['year_of_publication']])
-        # Fetch one record and return result
+        'SELECT book_title, book_author, Image_URL_L, price FROM books_data where Year_of_Publication=%s limit 8 ', [book['year_of_publication']])
+    # Fetch one record and return result
     more = cursor.fetchall()
 
     if book:
@@ -64,7 +68,7 @@ def addtocart():
     quantity = int(request.form['quantity'])
     isbn = request.form['isbn']
     if 'loggedin' in session:
-    
+
         if quantity and isbn and request.method == 'POST':
             cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
             cursor.execute(
@@ -72,20 +76,58 @@ def addtocart():
             # Fetch one record and return result
             book = cursor.fetchone()
 
-            cursor.execute('SELECT isbn FROM cart where isbn=%s and user_id=%s', (isbn,session['id']))
+            cursor.execute(
+                'SELECT isbn FROM cart where isbn=%s and user_id=%s', (isbn, session['id']))
             # Fetch one record and return result
             cart_book = cursor.fetchone()
             if cart_book:
                 cursor.execute('UPDATE cart set book_count=book_count+%s where isbn=%s and user_id=%s',
-                            (quantity,session['id'], isbn))
+                               (quantity, isbn, session['id']))
                 mysql.connection.commit()
             else:
-                cursor.execute('INSERT INTO cart VALUES (%s, %s, %s)',
-                                (session['id'], isbn,  quantity))
+                cursor.execute('INSERT INTO cart VALUES (%s, %s, %s, %s)',
+                               (session['id'], isbn,  quantity, book['price']))
                 mysql.connection.commit()
 
-        return redirect(url_for('home'))
+        return redirect(url_for('shop'))
         # User is not loggedin redirect to login page
+    else:
+        return redirect(url_for('login'))
+
+
+@app.route('/cart')
+def cart():
+    if 'loggedin' in session:
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute(
+            'select * from cart natural left outer join books_data where user_id=%s', [session['id']])
+        # Fetch one record and return result
+        cart_books = cursor.fetchall()
+
+        cursor.execute(
+            'select sum(price*book_count)as cart_total from cart natural left outer join books_data where user_id=%s', [session['id']])
+        cart_total = cursor.fetchone()
+        if cart_books:
+            return render_template('cart.html', cart_books=cart_books, cart_total=cart_total)
+        else:
+            return render_template('cart_empty.html')
+    else:
+        return redirect(url_for('login'))
+
+
+@app.route('/wishlist')
+def wishlist():
+    if 'loggedin' in session:
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute(
+            'select * from wishlist natural left outer join books_data where user_id=%s', [session['id']])
+        # Fetch one record and return result
+        wishlist_books = cursor.fetchall()
+
+        if wishlist_books:
+            return render_template('wishlist.html', wishlist_books=wishlist_books)
+        else:
+            return render_template('wishlist_empty.html')
     else:
         return redirect(url_for('login'))
 
@@ -94,7 +136,7 @@ def addtocart():
 def addtowishlist():
     isbn = request.form['isbn']
     if 'loggedin' in session:
-    
+
         if isbn and request.method == 'POST':
             cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
             cursor.execute(
@@ -102,20 +144,21 @@ def addtowishlist():
             # Fetch one record and return result
             book = cursor.fetchone()
 
-            cursor.execute('SELECT isbn FROM wishlist where isbn=%s and user_id=%s', (isbn,session['id']))
+            cursor.execute(
+                'SELECT isbn FROM wishlist where isbn=%s and user_id=%s', (isbn, session['id']))
             # Fetch one record and return result
-            cart_book = cursor.fetchone()
+            wishlist_book = cursor.fetchone()
             # delete from wishlist if it's already there
-            if cart_book:
-                cursor.execute('delete from wishlist where isbn=%s and user_id=%s',
-                            (session['id'], isbn))
+            if wishlist_book:
+                cursor.execute(
+                    'delete from wishlist where isbn=%s and user_id=%s', (isbn, session['id']))
                 mysql.connection.commit()
             else:
-                cursor.execute('INSERT INTO wishlist VALUES (%s, %s)',
-                                (session['id'], isbn))
+                cursor.execute(
+                    'INSERT INTO wishlist VALUES (%s, %s)', ((session['id']), isbn))
                 mysql.connection.commit()
 
-        return redirect(url_for('home'))
+        return redirect(url_for('shop'))
         # User is not loggedin redirect to login page
     else:
         return redirect(url_for('login'))
