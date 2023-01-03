@@ -1,0 +1,390 @@
+{% extends 'layout.html' %}
+
+{% block title %}Wishlist{% endblock %}
+
+{% block content %}
+  <div class="wrapper">
+     <!-- Header Start -->
+     <header class="header ">
+      <div class="nav ">
+        <nav class="navbar navbar-expand-lg">
+          <a class="navbar-brand" href="#"><img src="{{ url_for('static', filename = 'logo.svg') }}" alt="logo" style="width: 200px; margin-top: -10px;"/></a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse " id="navbarNav">
+            <div class="mr-auto" ></div>
+            <ul class="navbar-nav " style="margin-left: -20px;">
+              <li class="nav-item active">
+                <a class="nav-link" style="color: #000;" href="{{ url_for('home') }}"
+                  >Home <span class="sr-only">(current)</span></a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link"  style="color: #000;" href="{{ url_for('shop') }}">Books</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link"  style="color: #000;" href="{{ url_for('cart') }}">>Cart</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link"  style="color: #000;" href="Profile.html">Profile</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link"  style="color: #000;" href="{{ url_for('wishlist') }}">Wishlist</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link"  style="color: #000;" href="{{ url_for('logout') }}">Logout</a>
+              </li>
+              
+                
+            </ul>
+          </div>
+          </nav>
+            <div class="header__main-right">
+              <div class="header-toolbar-wrap">
+                  <div class="header-toolbar">
+                      <!-- <div class="header-toolbar__item header-toolbar--search-btn">
+                          <a href="#searchForm" class="header-toolbar__btn toolbar-btn">
+                              <i class="fas fa-search" style="color: rgb(25, 22, 22);"></i>
+                          </a>
+                      </div> -->
+                      <div class="search-container right-element ml-3 mr-4 text-white"><input class="" type="search" placeholder="Search" id="searchField" autocomplete="off" value="">
+                          <div class="searchIcon"><i class="fa fa-search"></i></div>
+                     </div>
+                      <!-- <div class="header-toolbar__item header-toolbar--minicart-btn">
+                          <a href="Addtocartpage.html" class="header-toolbar__btn toolbar-btn">
+                            <i class="fas fa-thin fa-cart-shopping" style="color: rgb(34, 34, 34);"></i>
+                              <span>0</span>
+                          </a>
+                      </div> -->
+                      <div class="header-toolbar__item d-block d-lg-none">
+                          <a href="#offcanvasMenu" class="header-toolbar__btn toolbar-btn menu-btn">
+                              <!-- <div class="hamburger-icon">
+                                  <span></span>
+                                  <span></span>
+                                  <span></span>
+                                  <span></span>
+                                  <span></span>
+                                  <span></span>
+                              </div> -->
+                          </a>
+                      </div>
+                  </div>
+              </div>
+          </div> 
+        
+                             
+                          <!-- </div> -->
+  </header>
+  
+
+
+    <div class="main-content-wrapper">
+        <div class="page-content-inner pt-md-40 pb-md-60" style="padding-top: 80px;padding-bottom: 80px; ">
+             <div class="container">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="table-content table-responsive">
+                                    <div class="text-center m-4">
+                                        <h1>Your wishlist is empty</h1>
+                                        <a href="{{ url_for('home') }}">
+                                        <button class="btn btn-size-md mt-2">Back to Home</button>
+                                    </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        </div>
+    </div>
+
+
+
+
+    <script type="text/javascript">
+        $('.show_confirm').click(function (event) {
+            var form = $(this).closest("form");
+            var name = $(this).data("name");
+            event.preventDefault();
+            swal({
+                title: `Are you sure you want to Remove Product From Cart?`,
+                text: "If you remove this, You can add once again to cart.",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        form.submit();
+                    }
+                });
+        });
+        function getCookie(name) {
+          let cookieValue = null;
+          if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+              const cookie = cookies[i].trim();
+              // Does this cookie string begin with the name we want?
+              if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+              }
+            }
+          }
+          return cookieValue;
+        }
+        var csrftoken = getCookie('csrftoken');
+        function add(id) {
+                sendData();
+                function sendData() {
+                fetch('/cart/add_cart_ajax/', {
+                    method: "POST",
+                    headers: {
+                    "Content-type": "application/jason",
+                    "X-CSRFToken": csrftoken,
+                    },
+                    body: JSON.stringify({
+    
+                    id: id,
+    
+    
+                    }),
+                })
+                    .then(response => response.json())
+                    .then((data) => {
+                    document.getElementById(id).value = data.quantity;
+                    document.getElementById('a'+data.id).innerHTML ='₹'+ data.producttotal;
+                    document.getElementById('subtotal').innerHTML ='₹'+ data.Total;
+                    document.getElementById('Tax').innerHTML = '₹'+data.Tax;
+                    document.getElementById('Alltotal').innerHTML ='₹'+data.Alltotal;
+    
+    
+                    });
+                }
+    
+                // Replace the above to show a success message within this page, e.g.
+                // const element = document.getElementById('paypal-button-container');
+                // element.innerHTML = '';
+                // element.innerHTML = '<h3>Thank you for your payment!</h3>';
+                // Or go to another URL:  actions.redirect('thank_you.html');
+    
+    }
+    function minus(id) {
+        minusData();
+        function minusData() {
+        fetch('/cart/minus_cart_ajax/', {
+            method: "POST",
+            headers: {
+            "Content-type": "application/jason",
+            "X-CSRFToken": csrftoken,
+            },
+            body: JSON.stringify({
+    
+            id: id,
+    
+    
+            }),
+        })
+            .then(response => response.json())
+            .then((data) => {
+            document.getElementById(id).value = data.quantity;
+            document.getElementById('a'+data.id).innerHTML ='₹'+ data.producttotal;
+            document.getElementById('subtotal').innerHTML ='₹'+ data.Total;
+            document.getElementById('Tax').innerHTML = '₹'+data.Tax;
+            document.getElementById('Alltotal').innerHTML ='₹'+data.Alltotal;
+    
+    
+            });
+    }
+    
+    // Replace the above to show a success message within this page, e.g.
+    // const element = document.getElementById('paypal-button-container');
+    // element.innerHTML = '';
+    // element.innerHTML = '<h3>Thank you for your payment!</h3>';
+    // Or go to another URL:  actions.redirect('thank_you.html');
+    
+    }
+    
+    </script>
+
+
+<style>
+
+.btn-fullwidth {
+    display: block;
+    width: 100%;
+}
+.btn-size-md {
+    padding: 16px 30px;
+}
+.btn {
+    color: #ffffff;
+    background-color: #089da1;
+    padding: 20px 40px;
+}
+
+
+.quantity__minus {
+    border-top: 2px solid #dee0ee;
+    border-bottom: 2px solid #dee0ee;
+    border-left: 1px solid #dee0ee;
+    border-right: 2px solid #dee0ee;
+    background: #fff;
+    color: #8184a1;
+}
+.quantity__minus, .quantity__plus {
+    display: block;
+    width: 22px;
+    height: 31px;
+    margin: 0;
+    background: #dee0ee;
+    text-decoration: none;
+    text-align: center;
+    line-height: 23px;
+}
+
+.quantity__input {
+    width: 34px;
+    height: 31px;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    border-top: 2px solid #dee0ee;
+    border-bottom: 2px solid #dee0ee;
+    border-left: 1px solid #dee0ee;
+    border-right: 2px solid #dee0ee;
+    background: #fff;
+    color: #000000;
+}
+
+
+.quantity__plus {
+    border-top: 2px solid #dee0ee;
+    border-bottom: 2px solid #dee0ee;
+    border-left: 1px solid #dee0ee;
+    border-right: 2px solid #dee0ee;
+    background: #fff;
+    color: #8184a1;
+}
+.cart-collaterals {
+    background: #f6f6f6;
+}
+.cart-totals {
+    padding: 30px 30px 0;
+    margin-bottom: 15px;
+}
+.cart-calculator__item--head, .cart-calculator__item--value, .product-summary .product-footer-meta p span, .variation-form .variation-label, .message-box p, .quantity, .quantity-label, .quantity-input, .quantity .qtybutton, .social__link, .btn-close, .comment-author a, .comment-content p, .nice-select:after, .cart-form__input, .cart-form__btn, .mini-cart, .mini-cart__product-remove, .mini-cart__product-title, .product-summary .product-title a, .product-summary .product-price-wrapper span, .variation-form .product-size-variations .product-size-variation-btn, .variation-form .reset_variations, .table tbody td.product-name h3 a, .table.compare-table tbody th, .group-product-table tbody td.product-name h3, .group-product-table tbody td.product-price .product-price-wrapper > span.product-price-old, .widget-list li a strong, .tagcloud a, .payment-label, .product-reviews .review__author {
+    color: #292323;
+}
+
+.cart-calculator__item--head {
+    -webkit-flex-basis: 90px;
+    -moz-flex-basis: 90px;
+    -ms-flex-preferred-size: 90px;
+    flex-basis: 90px;
+    max-width: 90px;
+    font-weight: 700;
+}
+
+.cart-calculator__item--head, .cart-calculator__item--value {
+    padding-top: 5px;
+    padding-bottom: 15px;
+    vertical-align: top;
+    text-transform: capitalize;
+    letter-spacing: 0;
+}
+
+.cart-calculator__item.order-total {
+    border-top: 1px solid #e5e5e5;
+}
+.cart-calculator__item{
+    -webkit-flex-wrap: wrap;
+    -moz-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+ .row {
+    --bs-gutter-x: 30px;
+    --bs-gutter-y: 0;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: calc(var(--bs-gutter-y) * -1);
+    margin-right: calc(var(--bs-gutter-x) * -.5);
+    margin-left: calc(var(--bs-gutter-x) * -.5);
+}
+body {
+    font-weight: 400;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.table tbody td.product-thumbnail {
+    width: 90px !important;
+    min-width: 90px !important;
+}
+.table th.wide-column, .table td.wide-column {
+    min-width: 240px;
+}
+.table tbody td {
+    padding: 15px 0;
+}
+.table th, .table td {
+    min-width: 100px;
+}
+.table td {
+    vertical-align: middle;
+    border: 0px solid #e5e5e5;
+}
+
+img{
+    width: 50%;
+} 
+
+.a-footer{
+    margin-top: 450px;
+}
+
+</style>
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
