@@ -1,0 +1,536 @@
+{% extends 'layout.html' %}
+
+{% block title %}Shop{% endblock %}
+
+{% block content %}
+<style>
+    input[type=range] {
+        -webkit-appearance: none;
+        width: 70%;
+    }
+
+    input[type=range]::-webkit-slider-runnable-track {
+        width: 1000px;
+        height: 5px;
+        background: #000000;
+        border: none;
+        border-radius: 3px;
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        border: none;
+        height: 16px;
+        width: 16px;
+        border-radius: 50%;
+        background: rgb(0, 0, 0);
+        margin-top: -5px;
+    }
+
+    input[type=range]:focus {
+        outline: none;
+    }
+
+    input[type=range]:focus::-webkit-slider-runnable-track {
+        background: #000000;
+    }
+
+    .row {
+        --bs-gutter-x: 30px;
+        --bs-gutter-y: 0;
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: calc(var(--bs-gutter-y) * -1);
+        margin-right: calc(var(--bs-gutter-x) * -.5);
+        margin-left: calc(var(--bs-gutter-x) * -.5);
+    }
+
+    /*  Shop1 */
+
+    .wrapper {
+        position: relative;
+    }
+
+    .page-item:first-child .page-link {
+        margin-left: 0;
+        border-top-left-radius: .25rem;
+        border-bottom-left-radius: .25rem;
+    }
+
+    .wrapper a {
+        text-decoration: none;
+        color: black;
+    }
+
+
+    .shop-products {
+        margin-top: 30px;
+    }
+
+    .shop-products .ft-product {
+        display: block;
+    }
+
+    .product-image {
+        margin-bottom: 22px;
+    }
+
+    .product-badge {
+        background-color: #ff5151;
+    }
+
+    /* .ft-product .product-action {
+  left: 20px;
+  bottom: 20px;
+}
+
+.ft-product .product-action a {
+    -webkit-transform: translate(-70px, 0);
+    -moz-transform: translate(-70px, 0);
+    -ms-transform: translate(-70px, 0);
+    -o-transform: translate(-70px, 0);
+    transform: translate(-70px, 0);
+    -moz-transition-delay: 50ms;
+    -ms-transition-delay: 50ms;
+    -o-transition-delay: 50ms;
+    -webkit-transition-delay: 50ms;
+    transition-delay: 50ms;
+    opacity: 0;
+}
+ */
+
+
+
+
+    .ft-product .product-action a:not(:last-child) {
+        margin-bottom: 10px;
+    }
+
+    .product-title {
+        margin-bottom: 6px;
+        font-weight: 400;
+        color: #373737;
+        font-size: 16px;
+    }
+
+    .product-info-button {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -moz-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        -webkit-align-items: center;
+        -moz-align-items: center;
+        align-items: center;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        -webkit-justify-content: space-between;
+        -moz-justify-content: space-between;
+        justify-content: space-between;
+    }
+
+    .product-price-wrapper {
+        line-height: 1.5;
+    }
+
+    .money {
+        display: inline-block;
+    }
+
+    /* .ft-product .product-inner .add-to-cart {
+  opacity: 0;
+  -webkit-transform: translate(0, 50px);
+  -moz-transform: translate(0, 50px);
+  -ms-transform: translate(0, 50px);
+  -o-transform: translate(0, 50px);
+  transform: translate(0, 50px);
+} */
+
+    .shop-products .ft-product-list {
+        display: none;
+    }
+
+    .ft-product-list .product-inner {
+        -webkit-flex-wrap: wrap;
+        -moz-flex-wrap: wrap;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -moz-flex;
+        display: -ms-flexbox;
+        display: flex;
+    }
+
+    .ft-product-list .product-image {
+        -webkit-flex-basis: 270px;
+        -moz-flex-basis: 270px;
+        -ms-flex-preferred-size: 270px;
+        flex-basis: 270px;
+        max-width: 270px;
+        position: relative;
+    }
+
+    .product-image {
+        margin-bottom: 22px;
+    }
+
+    .product-badge {
+        padding: 3px 5px;
+        color: #ffffff;
+    }
+
+    .ft-product-list .product-thumbnail-action {
+        -webkit-transform: scale(0.2, 0.2);
+        -moz-transform: scale(0.2, 0.2);
+        -ms-transform: scale(0.2, 0.2);
+        -o-transform: scale(0.2, 0.2);
+        transform: scale(0.2, 0.2);
+    }
+
+
+    .ft-product-list .product-info {
+        -webkit-flex-basis: calc(100% - 270px);
+        -moz-flex-basis: calc(100% - 270px);
+        -ms-flex-preferred-size: calc(100% - 270px);
+        flex-basis: calc(100% - 270px);
+        max-width: calc(100% - 270px);
+        padding-left: 40px;
+    }
+
+
+
+    .ft-product-list .product-title {
+        font-size: 28px;
+        line-height: 34px;
+    }
+
+    .pagination,
+    .breadcrumb {
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        -webkit-justify-content: center;
+        -moz-justify-content: center;
+        justify-content: center;
+    }
+</style>
+
+
+
+
+
+
+
+
+
+<div class="wrapper">
+    <!-- Header Start -->
+    <header class="header ">
+        <div class="nav ">
+            <nav class="navbar navbar-expand-lg">
+                <a class="navbar-brand" href="#"><img src="{{ url_for('static', filename = 'logo.svg') }}" alt="logo"
+                        style="width: 200px; margin-top: -10px; margin-left: 0px;" /></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse " id="navbarNav">
+                    <div class="mr-auto"></div>
+                    <ul class="navbar-nav ">
+                        <li class="nav-item active">
+                            <a class="nav-link" style="color: #000;" href="{{ url_for('home') }}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" style="color: #000;" href="{{ url_for('shop') }}">Books<span
+                                    class="sr-only">(current) </span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" style="color: #000;" href="Addtocartpage.html">Cart</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" style="color: #000;" href="{{ url_for('login') }}">Login</a>
+                        </li>
+
+
+                    </ul>
+                </div>
+            </nav>
+            <div class="header__main-right">
+                <div class="header-toolbar-wrap">
+                    <div class="header-toolbar">
+                        <!-- <div class="header-toolbar__item header-toolbar--search-btn">
+                           <a href="#searchForm" class="header-toolbar__btn toolbar-btn">
+                               <i class="fas fa-search" style="color: rgb(25, 22, 22);"></i>
+                           </a>
+                       </div> -->
+                        <div class="search-container right-element ml-3 mr-4 text-white"><input class="" type="search"
+                                placeholder="Search" id="searchField" autocomplete="off" value="">
+                            <div class="searchIcon"><i class="fa fa-search"></i></div>
+                        </div>
+                        <div class="header-toolbar__item header-toolbar--minicart-btn">
+                            <!-- <a href="Addtocartpage.html" class="header-toolbar__btn toolbar-btn">
+                                    <i class="fas fa-thin fa-cart-shopping" style="color: rgb(34, 34, 34);"></i>
+                                    <span>0</span>
+                                </a> -->
+                        </div>
+                        <div class="header-toolbar__item d-block d-lg-none">
+                            <a href="#offcanvasMenu" class="header-toolbar__btn toolbar-btn menu-btn">
+                                <div class="hamburger-icon">
+                                    <!-- <span></span>
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                        <span></span> -->
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- </div> -->
+    </header>
+
+
+
+
+
+
+    <!-- Main Content Wrapper  -->
+    <div class="main-content-wrapper">
+        <div class="shop-page wrapper" style="padding-top: 80px;padding-bottom: 80px;">
+            <div class="container">
+                <!-- <div onclick="window.location.href='productpage.html';" class="product-inner">  -->
+                <div class="row">
+                    <div class="col-xl-9 col-lg-8 order-lg-2 md--50" style="margin-bottom: 50px;">
+                        <!-- <div class="shop-toolbar" style="margin-bottom: 50px;">
+                            <div class="row align-items-center">
+                                <div class="col-md-7">
+                                    <div class="shop-toolbar__right d-flex justify-content-md-end justify-content-start flex-sm-row flex-column">
+                                        <p class="product-pages">Showing Result 06 Among 72</p>
+                                        <div class="product-view-mode  ml-xs-0"
+                                            style="margin-bottom: 50px; margin-left: 85px;">
+                                            <a href="#" class="active" data-target="grid">
+                                                <i class="fas fa-grid"></i>
+                                                <img src="image/icons8-squared-menu-24.png" alt="Grid">
+                                            </a>
+                                            <a href="#" data-target="list">
+                                                <i class="fa-solid fa-list-ul"></i>
+                                                <img src="image/icons8-bulleted-list-20.png" alt="Grid">
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                        
+                        
+                        <div class="shop-products">
+                            <div class="row">
+                                {% for book in books %}
+
+                                <div class="col-xl-4 col-sm-6 " style="margin-bottom: 50px;">
+                                    <div class="ft-product">
+                                        <div class="product-inner">
+                                            <div class="product-image">
+                                                <figure class="product-image--holder">
+                                                    <img src="{{  book.Image_URL_L  }}" style="height: 360px; width: 224px; object-fit: fill;" alt="Product">
+                                                </figure>
+                                                <!-- <a href="" class="product-overlay"></a> -->
+                                                <div class="product-action">
+                                                    <a data-bs-toggle="modal" data-bs-target="#productModaldetails"
+                                                        class="action-btn">
+                                                        <i class="fa fa-eye"></i>
+                                                    </a>
+                                                    <a href="Addtowishlist.html" class="action-btn">
+                                                        <i class="fa fa-heart"></i>
+                                                    </a>
+                                                    <a href="Addtocartpage.html" class="add-to-cart"
+                                                        style="padding: 8px 15px; margin-left: 52px; color: #ffffff; background-color: #089da1; border-radius:5px ;">
+                                                        <i class="fa fa-plus"></i>
+                                                        <span>Add to Cart</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="product-info">
+                                                <h3 class="product-title" style="width: 224px;">
+                                                    <a href="{{ url_for('productpage, isbn=book.isbn' )}}">{{ book.book_title }}</a>
+                                                </h3>
+                                                <div class="product-info-bottom">
+                                                    <div class="product-price-wrapper" style="font-weight: bold;">
+                                                        <span class="money fs-2">₹ {{ book.price }}</span>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="ft-product-list">
+                                        <div class="product-inner">
+                                            <figure class="product-image">
+                                                <a href="{{ url_for('productpage, isbn=book.isbn' )}}">
+                                                    <img src="{{  book.Image_URL_L  }}" alt="Products">
+                                                </a>
+                                                <div class="product-thumbnail-action">
+                                                    <a data-bs-toggle="modal" data-bs-target="#productModaldetails"
+                                                        class="action-btn quick view">
+                                                        <i class="fa fa-eye"></i>
+                                                    </a>
+                                                </div>
+                                            </figure>
+                                            <div class="product-info">
+                                                <h3 class="product-title">
+                                                    <a href="{{ url_for('productpage, isbn=book.isbn' )}}">{{ book.book_title }}</a>
+                                                </h3>
+                                                <div class="product-price-wrapper  mb-sm-10"
+                                                    style="margin-bottom: 15px; font-weight: bold;">
+                                                    <span class="money fs-2">₹ {{ book.price }}}</span>
+                                                </div>
+                                                <p class="product-short-description mb--20">
+                                                    " Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                                                    Accusantium doloremque eaque
+                                                    voluptate saepe optio rerum dolores aut illum consectetur ipsam?
+                                                    "
+                                                </p>
+                                                <div class="ft-product-action-list d-flex align-items-center">
+                                                    <a href="Addtocartpage.html" class="btn btn-size-md">Add to
+                                                        Cart</a>
+                                                    <a href="Addtowishlist.html" class="action-btn"
+                                                        style="margin-left: 20px;">
+                                                        <i class="fa fa-heart"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+
+
+
+                            </div>
+                        </div>
+                        <nav aria-label="pagination-wrap">
+                            <ul class="pagination">
+                                <li class="page-item ">
+                                    <a class="page-link">Previous</a>
+                                </li>
+                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item active" aria-current="page">
+                                    <a class="page-link" href="#">2</a>
+                                </li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+
+                    </div>
+                    <div class="col-xl-3 col-lg-4 order-lg-1">
+                        <aside class="shop-siderbar">
+                            <div class="shop-widget  p-5"
+                                style="background-color: rgba(247,248,249); margin-bottom: 40px;">
+                                <h3 class="widget-title " style="margin-bottom: 25px;">
+                                    Category
+                                </h3>
+                                <ul class="widget-list category-list">
+                                    <li>
+                                        <a href="/shop">
+                                            <span class="category-title">All</span>
+                                            <i class="fa fa-angle-double-right"></i>
+                                        </a>
+                                    </li>
+                                    <!--                                     
+                                    <li>
+                                        <a href="/shop?category=Book ">
+                                            <span class="category-title"> </span>
+                                            <i class="fa fa-angle-double-right"></i>
+                                        </a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a href="/shop?category=Book">
+                                            <span class="category-title"> </span>
+                                            <i class="fa fa-angle-double-right"></i>
+                                        </a>
+                                    </li> -->
+
+
+                                </ul>
+                            </div>
+                            <div class="shop-widget  p-5"
+                                style=" background-color: rgb(247, 248, 249); margin-bottom: 40px;">
+                                <h3 class="widget-title mb--25">Ratings</h3>
+                                <ul class="widget-list category-list">
+                                    <li>
+                                        <a href="/shop">
+                                            <span class="category-title">4 stars and above</span>
+                                        </a>
+                                        <input class="ratings-check-input" type="radio" name="4stars"
+                                            id="4 star ratings" checked="" required="" />
+                                        <br>
+                                        <a href="/shop">
+                                            <span class="category-title">3 stars and above</span>
+                                        </a>
+                                        <input class="ratings-input" type="radio" name="3stars" id="3 star ratings"
+                                            checked="" required="" />
+                                        <br>
+                                        <a href="/shop">
+                                            <span class="category-title">2 stars and above</span>
+                                        </a>
+                                        <input class="ratings-input" type="radio" name="2stars" id="2 star ratings"
+                                            checked="" required="" />
+                                        <br>
+                                        <a href="/shop">
+                                            <span class="category-title">1 star and above</span>
+                                        </a>
+                                        <input class="ratings-input" type="radio" name="1stars" id="1 star ratings"
+                                            checked="" required="" />
+
+
+                                    </li>
+
+
+                                </ul>
+                            </div>
+                            <div class="shop-widget p-5"
+                                style=" background-color: rgb(247, 248, 249); margin-bottom: 40px;">
+                                <div class="product-widget mb-30">
+                                    <h3 class="widget-title mb--25">Filter By Price</h3>
+                                    <div class="price__slider mt-30">
+                                        <input type="range" class="multi-range success" value="None" min="100"
+                                            max="1000" id="rangeInput" oninput="maxPrice.value=this.value"
+                                            width="400px;">
+                                        <div>
+                                            <form action="" class="s-form mt-20" method="get">
+                                                <b>₹ <input type="number" id="maxPrice" readonly="" name="FilterPrice"
+                                                        onkeyup="rangeInput.value=this.value" value="None"
+                                                        style="border: none; border-width: 0;  box-shadow: none;"></b>
+
+                                                <button type="submit" id="priceFilterBtn"
+                                                    class="tp-btn-square-lg btn-dark btn-sm btn-block mt-2">Filter</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </aside>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+</div>
+
+
+
+{% endblock %}
