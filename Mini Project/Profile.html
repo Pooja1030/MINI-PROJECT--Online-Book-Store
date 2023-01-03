@@ -114,35 +114,15 @@
             <div class="col-12">
               <div class="user-dashboard-tab flex-column flex-md-row">
                 <div class="user-dashboard-tab__head nav flex-md-column" role="tablist" aria-orientation="vertical">
-                  <button type="button" class="nav-link active" data-bs-toggle="tab" role="tab" data-bs-target="#dashboard" aria-controls="dashboard" aria-selected="true">Dashboard</button>
                   <button type="button" class="nav-link" data-bs-toggle="tab" role="tab" data-bs-target="#orders" aria-controls="orders" aria-selected="true">Orders</button>
                   <button type="button" class="nav-link" data-bs-toggle="tab" role="tab" data-bs-target="#addresses" aria-controls="addresses" aria-selected="true">Addresses</button>
+                  <button type="button" class="nav-link" data-bs-toggle="tab" role="tab" data-bs-target="#addtocart" aria-controls="cart" aria-selected="true">Cart</button>
+                  <button type="button" class="nav-link" data-bs-toggle="tab" role="tab" data-bs-target="#Addtowishlist" aria-controls="Wishlist" aria-selected="true">Wishlist</button>
                   <button type="button" class="nav-link" data-bs-toggle="tab" role="tab" data-bs-target="#accountdetails" aria-controls="accountdetails" aria-selected="true">Profile</button>
                   <button type="button" class="nav-link" data-bs-toggle="tab" role="tab" data-bs-target="EditaccountDetails" aria-controls="EditaccountDetails" aria-selected="true">Edit Profile</button>
-                  <button type="button" class="nav-link" data-bs-target="#Wallet" aria-controls="Wallet" aria-selected="true">Wallet</button>
                   <a type="button" class="nav-link" href="/logout">Logout</a>
                 </div>
                 <div class="user-dashboard-tab__content tab-content">
-                  <div class="tab-pane fade show active" id="dashboard">
-                    <!-- <p>
-                      "Hello "
-                      <strong> </strong>
-                      "(not "
-                      <strong> </strong>
-                      "? "
-                      <a href="/logout">Log out</a>
-                      ")"
-                    </p>
-                    <p>
-                      "From your account dashboard. you can easily check & view your"
-                      <a href>recent orders</a>
-                      ", manage your "
-                      <a href>shipping and billing addressess</a>
-                      " and "
-                      <a href>edit your password and account details</a>
-                      "."
-                    </p> -->
-                  </div>
                   <div class="tab-pane fade" id="orders">
                     <div class="content">
                       <div class="container">
@@ -150,9 +130,6 @@
                           <table class="table custom-table">
                             <thead>
                               <tr>
-                                <th>
-                                  <b>S.No</b>
-                                </th>
                                 <th>
                                   <b>ORDER ID</b>
                                 </th>
@@ -171,13 +148,18 @@
                                 <th>
                                   <b>Invoice</b>
                                 </th>
-                                <!-- <th>
-                                  <b>....</b>
-                                </th> -->
                               </tr>
                             </thead>
                             <tbody>
-                              
+                              <tr>
+                                <td>202301031926</td>
+                                <td class="p-2" style="min-width: 150px;">Jan.4,2023</td>
+                                <td>Ikigai</td>
+                                <td style="min-width: 170px;">Pending</td>
+                                <td>                           
+                                  ₹147
+                                  </td>
+                              </tr>
                             </tbody>
                           </table>
                         </div>
@@ -185,9 +167,9 @@
                     </div>
                   </div>
                   <div class="tab-pane fade" id="addresses">
-                    <p class="mb--20" style="margin-bottom: 20px;">
+                    <!-- <p class="mb--20" style="margin-bottom: 20px;">
                       "The following addresses will be used on the checkout page by default."
-                    </p>
+                    </p> -->
                     <div class="row">
                       <h1 class="text-center">
                         <b>Billing address</b>
@@ -267,29 +249,6 @@
                                   </div>
                                 </div>
                                 <hr>
-                                </div>
-                                <button class="btn btn-size-sm" onclick="copyToClipboard('#p1')">Copy CODE</button>
-                                <p></p>
-                                <button class="accordion text-dark text-center fs-3">
-                                  "If you enjoy using Heavenly Bakes, share your referral Code with friends and colleagues to earn Bonus"
-                                  <br>
-                                  <span class="text-danger fs-1">
-                                    <strong>
-                                      <i class="fa fa-star" aria-hidden="true"></i>
-                                      <span id="p1"> 
-
-                                      </span>
-                                    </strong>
-                                  </span>
-                                </button>
-                                <div class="accordion-content">
-                                  <p> </p>
-                                  <h1 style="color: rgb(0,0,0);
-                                            font-size: 36px; font-weight: 700; letter-spacing: -1px; line-height: 110%; margin: 0px auto; text-align: center;">
-                                          How it works>  
-                                          </h1>
-                                          "When you refer someone to Heavenly Bakes using your unique referral code, they & You Will receive a 50,as soon as they had done a Valid Registration and Login in Our Site. "
-                                          <p></p>
                                 </div>
                               </div>
                             </div>
@@ -376,42 +335,6 @@
                         </div>
                       </div>
                     </div>
-                    <div class="tab-pane fade" id="Wallet">
-                      <div class="row text-center">
-                        <div class="row">
-                          <div class="table-wrapper">
-                            <table class="fl-table">
-                              <thead>
-                                <tr>
-                                  <th>S No.</th>
-                                  <th>Date</th>
-                                  <th>Description</th>
-                                  <th>Amount</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr>
-                                  <td>1</td>
-                                  <td>Dec. 25, 2022</td>
-                                  <td>Wallet Created</td>
-                                  <td>
-                                    <strong class="fs-3">0.0</strong>
-                                  </td>
-                                </tr>
-                              </tbody>
-                              <tbody></tbody>
-                            </table>
-                            <div class="well p-1 rounded my-4" style="background-color: #E6E4E4;">
-                              <img src=" " alt="wallet" style="width: 40px;">
-                              <h2 class="mt-1">
-                                "Balance Available: "
-                                <b>0.0</b>
-                              </h2>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -483,9 +406,12 @@
 .container {
     max-width: 1216px;
     margin: auto;
-    width: 125%;
+    width: 120%;
 }
 
+.table{
+  width: 90%;
+}
 
 
 
@@ -761,7 +687,6 @@ button {
 
 
 </style>
-
 
 
 
