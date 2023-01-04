@@ -95,6 +95,71 @@ def addtocart():
         return redirect(url_for('login'))
 
 
+@app.route('/inc_quantity', methods=['POST'])
+def inc_quantity():
+    isbn = request.form['isbn']
+    
+    if isbn and request.method == 'POST':
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+
+        cursor.execute('UPDATE cart set book_count=book_count+1 where isbn=%s and user_id=%s',
+                       (isbn, session['id']))
+        mysql.connection.commit()
+    
+    return redirect(url_for('cart'))
+    
+
+@app.route('/dec_quantity', methods=['POST'])
+def dec_quantity():
+    isbn = request.form['isbn']
+    
+    if isbn and request.method == 'POST':
+        
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute(
+                'SELECT book_count FROM cart where isbn=%s and user_id=%s', (isbn, session['id']))
+            # Fetch one record and return result
+        cart_book = cursor.fetchone()
+
+        if cart_book['book_count']==1:
+            cursor.execute(
+            'delete from cart where isbn=%s and user_id=%s', (isbn, session['id']))
+            mysql.connection.commit()
+
+
+        else:
+            cursor.execute('UPDATE cart set book_count=book_count-1 where isbn=%s and user_id=%s',
+                        (isbn, session['id']))
+            mysql.connection.commit()
+    
+    return redirect(url_for('cart'))
+    
+
+
+@app.route('/set_quantity', methods=['POST'])
+def set_quantity():
+    quantity = request.form['quantity']
+    isbn = request.form['isbn']
+    
+    if quantity and isbn and request.method == 'POST':
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+
+        cursor.execute('UPDATE cart set book_count=%s where isbn=%s and user_id=%s',
+                       (quantity, isbn, session['id']))
+        mysql.connection.commit()
+    
+    return redirect(url_for('cart'))
+
+@app.route('/deletefromcart', methods=['POST'])
+def deletefromcart():
+    isbn = request.form['isbn']
+    if isbn and request.method == 'POST':
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute(
+            'delete from cart where isbn=%s and user_id=%s', (isbn, session['id']))
+        mysql.connection.commit()        
+        return redirect(url_for('cart'))
+ 
 @app.route('/cart')
 def cart():
     if 'loggedin' in session:
@@ -163,6 +228,16 @@ def addtowishlist():
     else:
         return redirect(url_for('login'))
 
+@app.route('/deletefromwishlist', methods=['POST'])
+def deletefromwishlist():
+    isbn = request.form['isbn']
+    if isbn and request.method == 'POST':
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute(
+            'delete from wishlist where isbn=%s and user_id=%s', (isbn, session['id']))
+        mysql.connection.commit()        
+        return redirect(url_for('wishlist'))
+        
 
 @app.route('/home')
 def home():
