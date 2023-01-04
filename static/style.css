@@ -85,7 +85,7 @@ nav ul li {
 } */
 
 #site{
-  background: url('brandi-redd-3vZ3V6JUDT0-unsplash.jpg');
+  background: url('background.jpg');
   background-size: cover;
   height: 90vh;
   width: 100%;
@@ -159,7 +159,7 @@ nav ul li {
 
 .featured_book_box .featured_book_card{
   width: 250px;
-  height: 500px;
+  height: 400px;
   text-align: center;
   padding: 5px;
   /* border: 1px solid #919191; */
@@ -173,7 +173,7 @@ nav ul li {
 
 .featured_book_box .featured_book_card .featurde_book_img img{
   height: 175px;
-  margin-top: 20px;
+  margin-top: 10px;
 
 }
 
