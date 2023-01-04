@@ -236,7 +236,7 @@
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse " id="navbarNav">
+                <div class="collapse navbar-collapse " id="navbarNav" style="margin-left: 60%;">
                     <div class="mr-auto"></div>
                     <ul class="navbar-nav ">
                         <li class="nav-item active">
@@ -247,7 +247,7 @@
                                     class="sr-only">(current) </span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" style="color: #000;" href="Addtocartpage.html">Cart</a>
+                            <a class="nav-link" style="color: #000;" href="{{ url_for('cart') }}">Cart</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" style="color: #000;" href="{{ url_for('login') }}">Login</a>
@@ -307,28 +307,8 @@
                 <!-- <div onclick="window.location.href='productpage.html';" class="product-inner">  -->
                 <div class="row">
                     <div class="col-xl-9 col-lg-8 order-lg-2 md--50" style="margin-bottom: 50px;">
-                        <!-- <div class="shop-toolbar" style="margin-bottom: 50px;">
-                            <div class="row align-items-center">
-                                <div class="col-md-7">
-                                    <div class="shop-toolbar__right d-flex justify-content-md-end justify-content-start flex-sm-row flex-column">
-                                        <p class="product-pages">Showing Result 06 Among 72</p>
-                                        <div class="product-view-mode  ml-xs-0"
-                                            style="margin-bottom: 50px; margin-left: 85px;">
-                                            <a href="#" class="active" data-target="grid">
-                                                <i class="fas fa-grid"></i>
-                                                <img src="image/icons8-squared-menu-24.png" alt="Grid">
-                                            </a>
-                                            <a href="#" data-target="list">
-                                                <i class="fa-solid fa-list-ul"></i>
-                                                <img src="image/icons8-bulleted-list-20.png" alt="Grid">
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
-                        
-                        
+
+
                         <div class="shop-products">
                             <div class="row">
                                 {% for book in books %}
@@ -338,7 +318,9 @@
                                         <div class="product-inner">
                                             <div class="product-image">
                                                 <figure class="product-image--holder">
-                                                    <img src="{{  book.Image_URL_L  }}" style="height: 360px; width: 224px; object-fit: fill;" alt="Product">
+                                                    <img src="{{  book.Image_URL_L  }}"
+                                                        style="height: 360px; width: 224px; object-fit: fill;"
+                                                        alt="Product">
                                                 </figure>
                                                 <!-- <a href="" class="product-overlay"></a> -->
                                                 <div class="product-action">
@@ -346,19 +328,29 @@
                                                         class="action-btn">
                                                         <i class="fa fa-eye"></i>
                                                     </a>
-                                                    <a href="Addtowishlist.html" class="action-btn">
-                                                        <i class="fa fa-heart"></i>
-                                                    </a>
-                                                    <a href="Addtocartpage.html" class="add-to-cart"
-                                                        style="padding: 8px 15px; margin-left: 52px; color: #ffffff; background-color: #089da1; border-radius:5px ;">
-                                                        <i class="fa fa-plus"></i>
-                                                        <span>Add to Cart</span>
-                                                    </a>
+                                                    <form method="post" action="/addtowishlist"
+                                                        style="display: inline-block;">
+                                                        <input type="hidden" name="isbn" value="{{ book.isbn }}" />
+                                                        <button type="submit" class="action-btn"
+                                                            style="border: none; background: none;"><i
+                                                                class="fa fa-heart"></i></button>
+                                                    </form>
+
+
+                                                    <form method="post" action="/addtocart"
+                                                        style="display: inline-block;">
+                                                        <input type="hidden" name="isbn" value="{{ book.isbn }}" />
+                                                        <input type="hidden" name="quantity" value="1" />
+                                                        <button type="submit" class="add-to-cart"
+                                                            style="border: none; padding: 8px 15px; margin-left: 52px; color: #ffffff; background-color: #089da1; border-radius:5px ;"><i
+                                                                class="fa fa-plus"></i>
+                                                            <span>Add to Cart</span></button>
+                                                    </form>
                                                 </div>
                                             </div>
                                             <div class="product-info">
                                                 <h3 class="product-title" style="width: 224px;">
-                                                    <a href="{{ url_for('productpage, isbn=book.isbn' )}}">{{ book.book_title }}</a>
+                                                    <a href="#">{{ book.book_title }}</a>
                                                 </h3>
                                                 <div class="product-info-bottom">
                                                     <div class="product-price-wrapper" style="font-weight: bold;">
@@ -370,44 +362,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="ft-product-list">
-                                        <div class="product-inner">
-                                            <figure class="product-image">
-                                                <a href="{{ url_for('productpage, isbn=book.isbn' )}}">
-                                                    <img src="{{  book.Image_URL_L  }}" alt="Products">
-                                                </a>
-                                                <div class="product-thumbnail-action">
-                                                    <a data-bs-toggle="modal" data-bs-target="#productModaldetails"
-                                                        class="action-btn quick view">
-                                                        <i class="fa fa-eye"></i>
-                                                    </a>
-                                                </div>
-                                            </figure>
-                                            <div class="product-info">
-                                                <h3 class="product-title">
-                                                    <a href="{{ url_for('productpage, isbn=book.isbn' )}}">{{ book.book_title }}</a>
-                                                </h3>
-                                                <div class="product-price-wrapper  mb-sm-10"
-                                                    style="margin-bottom: 15px; font-weight: bold;">
-                                                    <span class="money fs-2">₹ {{ book.price }}}</span>
-                                                </div>
-                                                <p class="product-short-description mb--20">
-                                                    " Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                                                    Accusantium doloremque eaque
-                                                    voluptate saepe optio rerum dolores aut illum consectetur ipsam?
-                                                    "
-                                                </p>
-                                                <div class="ft-product-action-list d-flex align-items-center">
-                                                    <a href="Addtocartpage.html" class="btn btn-size-md">Add to
-                                                        Cart</a>
-                                                    <a href="Addtowishlist.html" class="action-btn"
-                                                        style="margin-left: 20px;">
-                                                        <i class="fa fa-heart"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                
                                 </div>
                                 {% endfor %}
 
@@ -446,22 +401,31 @@
                                             <i class="fa fa-angle-double-right"></i>
                                         </a>
                                     </li>
-                                    <!--                                     
                                     <li>
-                                        <a href="/shop?category=Book ">
-                                            <span class="category-title"> </span>
+                                        <a href="/shop">
+                                            <span class="category-title">Fiction</span>
                                             <i class="fa fa-angle-double-right"></i>
                                         </a>
                                     </li>
-                                    
                                     <li>
-                                        <a href="/shop?category=Book">
-                                            <span class="category-title"> </span>
+                                        <a href="/shop">
+                                            <span class="category-title">Non-fiction</span>
                                             <i class="fa fa-angle-double-right"></i>
                                         </a>
-                                    </li> -->
+                                    </li>
+                                    <li>
+                                        <a href="/shop">
+                                            <span class="category-title">Romance</span>
+                                            <i class="fa fa-angle-double-right"></i>
+                                        </a>
 
-
+                                    </li>
+                                    <li>
+                                        <a href="/shop">
+                                            <span class="category-title">Mystery</span>
+                                            <i class="fa fa-angle-double-right"></i>
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                             <div class="shop-widget  p-5"
@@ -469,31 +433,19 @@
                                 <h3 class="widget-title mb--25">Ratings</h3>
                                 <ul class="widget-list category-list">
                                     <li>
-                                        <a href="/shop">
-                                            <span class="category-title">4 stars and above</span>
-                                        </a>
-                                        <input class="ratings-check-input" type="radio" name="4stars"
-                                            id="4 star ratings" checked="" required="" />
-                                        <br>
-                                        <a href="/shop">
-                                            <span class="category-title">3 stars and above</span>
-                                        </a>
-                                        <input class="ratings-input" type="radio" name="3stars" id="3 star ratings"
-                                            checked="" required="" />
-                                        <br>
-                                        <a href="/shop">
-                                            <span class="category-title">2 stars and above</span>
-                                        </a>
-                                        <input class="ratings-input" type="radio" name="2stars" id="2 star ratings"
-                                            checked="" required="" />
-                                        <br>
-                                        <a href="/shop">
-                                            <span class="category-title">1 star and above</span>
-                                        </a>
-                                        <input class="ratings-input" type="radio" name="1stars" id="1 star ratings"
-                                            checked="" required="" />
 
-
+                                        <div class="dropdown">
+                                            <button class="btn btn-secondary dropdown-toggle" type="button"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                Ratings
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="#">4 stars and above</a></li>
+                                                <li><a class="dropdown-item" href="#">3 stars and above</a></li>
+                                                <li><a class="dropdown-item" href="#">2 stars and above</a></li>
+                                                <li><a class="dropdown-item" href="#">1 star and above</a></li>
+                                            </ul>
+                                        </div>
                                     </li>
 
 
@@ -508,7 +460,7 @@
                                             max="1000" id="rangeInput" oninput="maxPrice.value=this.value"
                                             width="400px;">
                                         <div>
-                                            <form action="" class="s-form mt-20" method="get">
+                                            <form action="/filter" class="s-form mt-20" method="get">
                                                 <b>₹ <input type="number" id="maxPrice" readonly="" name="FilterPrice"
                                                         onkeyup="rangeInput.value=this.value" value="None"
                                                         style="border: none; border-width: 0;  box-shadow: none;"></b>

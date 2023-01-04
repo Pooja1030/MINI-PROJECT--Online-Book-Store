@@ -5,219 +5,200 @@
 {% block content %}
 <!-- Main Wrapper Start -->
 <div class="wrapper">
-      <!-- Header Start -->
-  <header class="header ">
-    <div class="nav ">
-      <nav class="navbar navbar-expand-lg">
-        <a class="navbar-brand" href="#"><img src="{{ url_for('static', filename = 'logo.svg') }}" alt="logo" style="width: 200px; margin-top: -10px;"/></a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse " id="navbarNav">
-          <div class="mr-auto" ></div>
-          <ul class="navbar-nav " >
-            <li class="nav-item active">
-              <a class="nav-link" style="color: #000;" href="#"
-                >Home <span class="sr-only">(current)</span></a
-              >
-            </li>
-            <li class="nav-item">
-              <a class="nav-link"  style="color: #000;" href="{{ url_for('shop') }}">Books</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link"  style="color: #000;" href="{{ url_for('cart') }}">Cart</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link"  style="color: #000;" href="Profile.html">Profile</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link"  style="color: #000;" href="{{ url_for('wishlist') }}">Wishlist</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link"  style="color: #000;" href="{{ url_for('logout') }}">Logout</a>
-            </li>
-            
-              
-          </ul>
-        </div>
-        </nav>
-          <div class="header__main-right">
-            <div class="header-toolbar-wrap">
-                <div class="header-toolbar">
-                    <!-- <div class="header-toolbar__item header-toolbar--search-btn">
-                        <a href="#searchForm" class="header-toolbar__btn toolbar-btn">
-                            <i class="fas fa-search" style="color: rgb(25, 22, 22);"></i>
-                        </a>
-                    </div> -->
-                    <div class="search-container right-element ml-3 mr-4 text-white"><input class="" type="search" placeholder="Search" id="searchField" autocomplete="off" value="">
-                        <div class="searchIcon"><i class="fa fa-search"></i></div>
-                   </div>
-                    <!-- <div class="header-toolbar__item header-toolbar--minicart-btn">
-                        <a href="Addtocartpage.html" class="header-toolbar__btn toolbar-btn">
-                          <i class="fas fa-thin fa-cart-shopping" style="color: rgb(34, 34, 34);"></i>
-                            <span>0</span>
-                        </a>
-                    </div> -->
-                    <div class="header-toolbar__item d-block d-lg-none">
-                        <a href="#offcanvasMenu" class="header-toolbar__btn toolbar-btn menu-btn">
-                            <!-- <div class="hamburger-icon">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div> -->
-                        </a>
+    <!-- Header Start -->
+    <header class="header ">
+        <div class="nav ">
+            <nav class="navbar navbar-expand-lg">
+                <a class="navbar-brand" href="#"><img src="{{ url_for('static', filename = 'logo.svg') }}" alt="logo"
+                        style="width: 200px; margin-top: -10px;" /></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse " id="navbarNav" style="margin-left: 20%;">
+                    <div class="mr-auto"></div>
+                    <ul class="navbar-nav ">
+                        <li class="nav-item active">
+                            <a class="nav-link" style="color: #000;" href="#">Home<span
+                                    class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" style="color: #000;" href="{{ url_for('shop') }}">Books</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" style="color: #000;" href="{{ url_for('cart') }}">Cart</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" style="color: #000;" href="Profile.html">Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" style="color: #000;" href="{{ url_for('wishlist') }}">Wishlist</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" style="color: #000;" href="{{ url_for('logout') }}">Logout</a>
+                        </li>
+
+
+                    </ul>
+                </div>
+            </nav>
+            <div class="header__main-right">
+                <div class="header-toolbar-wrap">
+                    <div class="header-toolbar">
+
+                        <div class="search-container right-element ml-3 mr-4 text-white"><input class="" type="search"
+                                placeholder="Search" id="searchField" autocomplete="off" value="">
+                            <div class="searchIcon"><i class="fa fa-search"></i></div>
+                        </div>
+
+                        <div class="header-toolbar__item d-block d-lg-none">
+                            <a href="#offcanvasMenu" class="header-toolbar__btn toolbar-btn menu-btn">
+
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div> 
-      
-                           
-                        <!-- </div> -->
-</header>
+
+
+        </div>
+    </header>
 
 
 
-<main class="main-content-wrapper">
-    <!-- Slider area Start -->
-    <section class="homepage-slider mb--75 mb-md--55">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    <div id="site">
-                        <div class="col-lg-6 col-md-12 site-title text-dark">
-                            <h1 class="title-text text-uppercase">
-                                BOOKS WILL EXPAND YOUR KNOWLEDGE
-                            </h1>
-                            <p>
-                                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Adipisci
-                                harum, tempora corrupti quisquam vero qui facere consequatur
-                                repudiandae, inventore voluptas tempore ad doloribus. Voluptatum
-                                totam ducimus, aliquid ipsam sapiente illum!
-                            </p>
-                            <div class="site-buttons">
-                                <a href="shop1.html" class="site-buttons">
-                                    <div class="d-flex flex-row flex-wrap">
-                                        <button type="button" class="btn button btn-success mr-4">
-                                            Explore!
-                                        </button>
-                                    </div>
-                                </a>
+    <main class="main-content-wrapper">
+        <!-- Slider area Start -->
+        <section class="homepage-slider mb--75 mb-md--55">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div id="site">
+                            <div class="col-lg-6 col-md-12 site-title text-dark">
+                                <h1 class="title-text text-uppercase"
+                                    style="font-size: 48px; font-weight: bold; margin: 20px 0;">
+                                    BOOKS WILL EXPAND YOUR KNOWLEDGE
+                                </h1>
+                                <p>
+                                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Adipisci
+                                    harum, tempora corrupti quisquam vero qui facere consequatur
+                                    repudiandae, inventore voluptas tempore ad doloribus. Voluptatum
+                                    totam ducimus, aliquid ipsam sapiente illum!
+                                </p>
+                                <div class="site-buttons" style="margin: 20px 0;">
+                                    <a href="{{ url_for('shop') }}" class="site-buttons">
+                                        <div class="d-flex flex-row flex-wrap">
+                                            <button type="button" class="btn button btn-success mr-4"
+                                                style=" width: 200px; padding: 10px 0;">
+                                                Explore
+                                            </button>
+                                        </div>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-    <!-- Slider area End -->
+        </section>
+        <!-- Slider area End -->
 
 
-    <div class="arrivals_books">
+        <div class="arrivals_books" style="margin-top:20px;">
 
-        <h1>New Arrivals</h1>
+            <h1>New Arrivals</h1>
 
-        <div class="featured_book_box">
+            <div class="featured_book_box">
 
-            {% for book in new %}
-            <div class="featured_book_card">
+                {% for book in new %}
+                <div class="featured_book_card">
 
-                <div class="featurde_book_img">
-                    <img src="{{  book.Image_URL_L  }}">
+                    <div class="featurde_book_img">
+                        <img src="{{  book.Image_URL_L  }}">
+                    </div>
+
+                    <div class="featurde_book_tag">
+                        <h2>{{ book.book_title }}</h2>
+                        <p class="writer">{{ book.book_author }}</p>
+                        <!-- <div class="categories">Thriller, Horror, Romance</div> -->
+                        <p class="book_price text-secondary">₹ {{ book.price }}</p>
+                        <a href="#" class="f_btn">Learn More</a>
+                    </div>
                 </div>
+                {% endfor %}
 
-                <div class="featurde_book_tag">
-                    <h2>{{ book.book_title }}</h2>
-                    <p class="writer">{{ book.book_author }}</p>
-                    <!-- <div class="categories">Thriller, Horror, Romance</div> -->
-                    <p class="book_price text-secondary">₹ {{ book.price }}</p>
-                </div>
             </div>
-            {% endfor %}
 
         </div>
 
-    </div>
+
+        <!-- Features -->
 
 
-    <!-- Features -->
+        <div class="featured_books">
 
+            <h1>Featured Books</h1>
 
-    <div class="featured_books">
+            <div class="featured_book_box">
 
-        <h1>Featured Books</h1>
+                {% for book in featured %}
+                <div class="featured_book_card">
 
-        <div class="featured_book_box">
+                    <div class="featurde_book_img">
+                        <img src="{{  book.Image_URL_L  }}">
+                    </div>
 
-            {% for book in featured %}
-            <div class="featured_book_card">
-
-                <div class="featurde_book_img">
-                    <img src="{{  book.Image_URL_L  }}">
+                    <div class="featurde_book_tag">
+                        <h2>{{ book.book_title }}</h2>
+                        <p class="writer">{{ book.book_author }}</p>
+                        <!-- <div class="categories">Thriller, Horror, Romance</div> -->
+                        <p class="book_price text-secondary">₹ {{ book.price }}</p>
+                        <a href="#" class="f_btn">Learn More</a>
+                    </div>
                 </div>
+                {% endfor %}
 
-                <div class="featurde_book_tag">
-                    <h2>{{ book.book_title }}</h2>
-                    <p class="writer">{{ book.book_author }}</p>
-                    <!-- <div class="categories">Thriller, Horror, Romance</div> -->
-                    <p class="book_price text-secondary">₹ {{ book.price }}</p>
-                    <a href="#" class="f_btn">Learn More</a>
-                </div>
             </div>
-            {% endfor %}
 
         </div>
 
-    </div>
 
 
 
 
+        <!--Classics-->
+        <div class="classics_books">
 
-    <!--Classics-->
-    <div class="classics_books">
+            <h1>Classics</h1>
 
-        <h1>Classics</h1>
+            <div class="featured_book_box">
 
-        <div class="featured_book_box">
+                {% for book in classic %}
+                <div class="featured_book_card">
 
-            {% for book in classic %}
-            <div class="featured_book_card">
+                    <div class="featurde_book_img">
+                        <img src="{{  book.Image_URL_L  }}">
+                    </div>
 
-                <div class="featurde_book_img">
-                    <img src="{{  book.Image_URL_L  }}">
+                    <div class="featurde_book_tag">
+                        <h2>{{ book.book_title }}</h2>
+                        <p class="writer">{{ book.book_author }}</p>
+                        <!-- <div class="categories">Thriller, Horror, Romance</div> -->
+                        <p class="book_price text-secondary">₹ {{ book.price }}</p>
+                        <a href="#" class="f_btn">Learn More</a>
+                    </div>
                 </div>
+                {% endfor %}
 
-                <div class="featurde_book_tag">
-                    <h2>{{ book.book_title }}</h2>
-                    <p class="writer">{{ book.book_author }}</p>
-                    <!-- <div class="categories">Thriller, Horror, Romance</div> -->
-                    <p class="book_price text-secondary">₹ {{ book.price }}</p>
-                    <a href="#" class="f_btn">Learn More</a>
-                </div>
             </div>
-            {% endfor %}
 
         </div>
+    </main>
 
-    </div>
-</main>
+    <style>
+        ul {
+            margin-inline: -35px;
+            list-style: none;
+        }
+    </style>
 
-<style>
-    ul {
-        margin-inline: -35px;
-        list-style: none;
-    }
-</style>
-
-{% endblock %}
+    {% endblock %}
