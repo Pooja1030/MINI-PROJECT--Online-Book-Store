@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+  <!-- 
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+  /> -->
+  <link rel="stylesheet" href="   https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename = 'style.css') }}" />
+
+</head>
+
+<body>
+
+  <div class="wrapper">
+    <!-- Header Start -->
+    <header class="header ">
+      <div class="nav ">
+        <nav class="navbar navbar-expand-lg">
+          <a class="navbar-brand" href="#"><img src="logo.svg" alt="logo"
+              style="width: 200px; margin-top: -10px; margin-left: 60px;" /></a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse " id="navbarNav">
+            <div class="mr-auto"></div>
+            <ul class="navbar-nav ">
+              <li class="nav-item active">
+                <a class="nav-link" style="color: #000;" href="#">Home <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" style="color: #000;" href="shop1.html">Books</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" style="color: #000;" href="Addtocartpage.html">Cart</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" style="color: #000;" href="Profile.html">Profile</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" style="color: #000;" href="Addtowishlist.html">Wishlist</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" style="color: #000;" href="loginpage.html">Logout</a>
+              </li>
+
+
+            </ul>
+        </nav>
+        <div class="header__main-right">
+          <div class="header-toolbar-wrap">
+            <div class="header-toolbar">
+              <!-- <div class="header-toolbar__item header-toolbar--search-btn">
+                               <a href="#searchForm" class="header-toolbar__btn toolbar-btn">
+                                   <i class="fas fa-search" style="color: rgb(25, 22, 22);"></i>
+                               </a>
+                           </div> -->
+              <div class="search-container right-element ml-3 mr-4 text-white"><input class="" type="search"
+                  placeholder="Search" id="searchField" autocomplete="off" value="">
+                <div class="searchIcon"><i class="fa fa-search"></i></div>
+              </div>
+              <div class="header-toolbar__item header-toolbar--minicart-btn">
+                <a href="Addtocartpage.html" class="header-toolbar__btn toolbar-btn">
+                  <i class="fas fa-thin fa-cart-shopping" style="color: rgb(34, 34, 34);"></i>
+                  <span>0</span>
+                </a>
+              </div>
+              <div class="header-toolbar__item d-block d-lg-none">
+                <a href="#offcanvasMenu" class="header-toolbar__btn toolbar-btn menu-btn">
+                  <div class="hamburger-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- </div> -->
+    </header>
+
+    <div class="main-content-wrapper">
+      <div class="page-content-inner ptb-md--60 pb-sm--55" style="padding-top: 80px; padding-bottom: 80px;">
+        <div class="container">
+          <div class="row">
+            <div class="col-12">
+              <div class="user-dashboard-tab flex-column flex-md-row">
+                <div class="user-dashboard-tab__head nav flex-md-column" role="tablist" aria-orientation="vertical">
+                  <button type="button" class="nav-link" data-bs-toggle="tab" role="tab" data-bs-target="#orders"
+                    aria-controls="orders" aria-selected="true">Orders</button>
+                  <button type="button" class="nav-link" data-bs-toggle="tab" role="tab" data-bs-target="#addresses"
+                    aria-controls="addresses" aria-selected="true">Addresses</button>
+                  <button type="button" class="nav-link" data-bs-toggle="tab" role="tab" data-bs-target="#addtocart"
+                    aria-controls="cart" aria-selected="true">Cart</button>
+                  <button type="button" class="nav-link" data-bs-toggle="tab" role="tab" data-bs-target="#Addtowishlist"
+                    aria-controls="Wishlist" aria-selected="true">Wishlist</button>
+                  <button type="button" class="nav-link" data-bs-toggle="tab" role="tab"
+                    data-bs-target="#accountdetails" aria-controls="accountdetails"
+                    aria-selected="true">Profile</button>
+                  <button type="button" class="nav-link" data-bs-toggle="tab" role="tab"
+                    data-bs-target="EditaccountDetails" aria-controls="EditaccountDetails" aria-selected="true">Edit
+                    Profile</button>
+                  <a type="button" class="nav-link" href="/logout">Logout</a>
+                </div>
+                <div class="user-dashboard-tab__content tab-content">
+                  <div class="tab-pane fade" id="orders">
+                    <div class="content">
+                      <div class="container">
+                        <div class="table table-responsive">
+                          <table class="table custom-table">
+                            <thead>
+                              <tr>
+                                <th>
+                                  <b>ORDER ID</b>
+                                </th>
+                                <th>
+                                  <b>Date</b>
+                                </th>
+                                <th>
+                                  <b>Product</b>
+                                </th>
+                                <th>
+                                  <b>Status</b>
+                                </th>
+                                <th>
+                                  <b>Product Price</b>
+                                </th>
+                                <th>
+                                  <b>Invoice</b>
+                                </th>
+                                <!-- <th>
+                                  <b>....</b>
+                                </th> -->
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>202301031926</td>
+                                <td class="p-2" style="min-width: 150px;">Jan.4,2023</td>
+                                <td>Ikigai</td>
+                                <td style="min-width: 170px;">Pending</td>
+                                <td>
+                                  ₹147
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="addresses">
+                    <!-- <p class="mb--20" style="margin-bottom: 20px;">
+                      "The following addresses will be used on the checkout page by default."
+                    </p> -->
+                    <div class="row">
+                      <h1 class="text-center">
+                        <b>Billing address</b>
+                      </h1>
+                      <div class="col-md-6">
+                        <div class="well-md mt-4">
+                          <div class="card">
+                            <div class="card-body text-center">
+                              <h2 class="card-title">
+                                <b>abc</b>
+                              </h2>
+                              <p class="card-text"></p>
+                              <p>24plot</p>
+                              <p>nyc</p>
+                              <p>usa-123435</p>
+                              <p></p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="accountdetails">
+                    <div class="container">
+                      <div class="main-body">
+                        <div class="row gutters-sm">
+                          <div class="col-md-4 mb-3">
+                            <div class="card">
+                              <div class="card-body">
+                                <div class="d-flex flex-column align-items-center text-center">
+                                  <img src="" alt="Admin" class="rounded-circle" width="150">
+                                  <div class="mt-3">
+                                    <h3>
+                                      <strong> </strong>
+                                    </h3>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-8">
+                            <div class="card mb-3">
+                              <div class="card-body">
+                                <div class="row">
+                                  <div class="col-sm-3">
+                                    <h4 class="mb-0">Full Name</h4>
+                                  </div>
+                                  <div class="col-sm-9 text-secondary">
+                                    "abcdef"
+                                  </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                  <div class="col-sm-3">
+                                    <h4 class="mb-0">Username</h4>
+                                  </div>
+                                  <div class="col-sm-9 text-secondary">
+                                    "abc"
+                                  </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                  <div class="col-sm-3">
+                                    <h4 class="mb-0">Email</h4>
+                                  </div>
+                                  <div class="col-sm-9 text-secondary">
+                                    " "
+                                  </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                  <div class="col-sm-3">
+                                    <h4 class="mb-0">Mobile</h4>
+                                  </div>
+                                  <div class="col-sm-9 text-secondary">
+                                    "984764281"
+                                  </div>
+                                </div>
+                                <hr>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- --------------------  -->
+                  </div>
+                  <!--      used for editing Profile with coupon trick -->
+                  <div class="tab-pane fade" id="EditaccountDetails">
+                    <div class="container">
+                      <div class="main-body">
+                        <div class="row">
+                          <div class="col-lg-4">
+                            <div class="card">
+                              <div class="card-body">
+                                <div class="d-flex flex-column align-items-center text-center">
+                                  <img src="" alt="Admin" class="rounded-circle" width="150">
+                                  <div class="mt-3">
+                                    <h3>
+                                      <strong> </strong>
+                                    </h3>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-8">
+                            <div class="card">
+                              <div class="card-body">
+                                <form action method="post" class="form form--account">
+                                  <input type="hidden" name="csrfmiddlewaretoken"
+                                    value="EGjhclsMWUTf0GU2Z8HvOkiuE64gPbtxm7xVCJd0tQm40yJhn59E4YdBuaGJjvFi">
+                                  <div class="row mb-3">
+                                    <div class="col-sm-3">
+                                      <h4 class="mb-0">First Name</h4>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                      <input type="text" class="form-control" value=" " name="first_name">
+                                    </div>
+                                  </div>
+                                  <div class="row mb-3">
+                                    <div class="col-sm-3">
+                                      <h4 class="mb-0">Last Name</h4>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                      <input type="text" class="form-control" value=" " name="last_name">
+                                    </div>
+                                  </div>
+                                  <div class="row mb-3">
+                                    <div class="col-sm-3">
+                                      <h4 class="mb-0">Username</h4>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                      <input type="text" class="form-control" value=" " name="username">
+                                    </div>
+                                  </div>
+                                  <div class="row mb-3">
+                                    <div class="col-sm-3">
+                                      <h4 class="mb-0">Email</h4>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                      <input type="email" class="form-control" value=" " name="email">
+                                    </div>
+                                  </div>
+                                  <div class="row mb-3">
+                                    <div class="col-sm-3">
+                                      <h4 class="mb-0">Mobile</h4>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                      <input type="phone" class="form-control" value=" " name="phone_number">
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-sm-3"></div>
+                                    <div class="col-sm-9 text-secondary">
+                                      <input type="submit" class="btn btn-primary btn-size-sm px-4"
+                                        value="Save Changes">
+                                    </div>
+                                  </div>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+      <!-- Footer -->
+
+      <footer class="a-footer">
+        <div class="container">
+          <div class="row">
+            <div class="footer-col">
+              <h4>Help</h4>
+              <ul>
+                <li><a href="#">Payment</a></li>
+                <li><a href="#">Delivery</a></li>
+                <li><a href="#">Return of books</a></li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <h4>About</h4>
+              <ul>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">History</a></li>
+                <li><a href="#">Privacy policy</a></li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <h4>Catalog</h4>
+              <ul>
+                <li><a href="#">New Arrivals</a></li>
+                <li><a href="#">Bestsellers</a></li>
+                <li><a href="#">Classics</a></li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <h4>Contact</h4>
+              <div class="social-links">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+
+    </div>
+    <!-- </div> -->
+
+
+
+
+
+    <style>
+      .container {
+        max-width: 1216px;
+        margin: auto;
+        width: 120%;
+      }
+
+      .table {
+        width: 90%;
+      }
+
+
+
+      .nav .navbar-expand-lg .navbar-collapse {
+        display: -ms-flexbox !important;
+        display: flex !important;
+        -ms-flex-preferred-size: auto;
+        flex-basis: auto;
+        /* margin-top: -78px; */
+        margin-left: 80px;
+        display: inline-flex;
+      }
+
+
+
+
+      .row {
+        --bs-gutter-x: 20px;
+        --bs-gutter-y: 0;
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: calc(var(--bs-gutter-y) * -1);
+        margin-right: calc(var(--bs-gutter-x) * -.5);
+        margin-left: calc(var(--bs-gutter-x) * -.5);
+      }
+
+      .col-12 {
+        flex: 0 0 auto;
+        width: 100%;
+      }
+
+      .user-dashboard-tab__head .nav-link.active {
+        background-color: #ff5151;
+        color: #ffffff;
+      }
+
+      .user-dashboard-tab__head .nav-link {
+        color: #373737;
+        padding: 12px 50px;
+        border: none;
+        background: transparent;
+        text-align: left;
+      }
+
+      .nav-link {
+        display: block;
+        padding: 0.5rem 1rem;
+        color: #0d6efd;
+        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+      }
+
+
+
+
+      .user-dashboard-tab {
+        -webkit-box-align: start;
+        -ms-flex-align: start;
+        -webkit-align-items: flex-start;
+        -moz-align-items: flex-start;
+        align-items: flex-start;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -moz-flex;
+        display: -ms-flexbox;
+        display: flex;
+      }
+
+      .user-dashboard-tab__head {
+        margin-top: 100px;
+        background-color: #e7e7e7;
+        padding: 15px 0;
+        -webkit-flex-basis: 190px;
+        -moz-flex-basis: 190px;
+        -ms-flex-preferred-size: 190px;
+        flex-basis: 190px;
+        width: 200px;
+        /* margin-right: 10px; */
+      }
+
+      .tab-content {
+        width: 100%;
+      }
+
+      .user-dashboard-tab__content {
+        -webkit-flex-basis: calc(100% - 220px);
+        -moz-flex-basis: calc(100% - 220px);
+        -ms-flex-preferred-size: calc(100% - 220px);
+        flex-basis: calc(100% - 220px);
+        max-width: calc(100% - 220px);
+      }
+
+
+
+      .tab-content .tab-pane {
+        margin-top: -355px;
+        display: none;
+        height: 0;
+        max-width: 100%;
+        visibility: hidden;
+        overflow: hidden;
+        opacity: 0;
+        margin-left: 382px;
+      }
+
+      p {
+        margin-top: 0;
+        margin-bottom: 15px;
+      }
+
+      .content {
+        padding: 1rem 0;
+        width: 125%;
+      }
+
+      .content {
+        font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        background-color: #efefef;
+        font-weight: 300;
+      }
+
+
+      .custom-table thead tr,
+      .custom-table thead th {
+        border-top: none;
+        border-bottom: none !important;
+      }
+
+      .table> :not(caption)>*>* {
+        padding: 0.5rem 0.5rem;
+        background-color: var(--bs-table-bg);
+        border-bottom-width: 1px;
+        box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
+      }
+
+      thead,
+      tbody,
+      tfoot,
+      tr,
+      td,
+      th {
+        border-color: inherit;
+        border-style: solid;
+        border-width: 0;
+      }
+
+      .main-body {
+        padding: 15px;
+      }
+
+      .gutters-sm {
+        margin-right: -8px;
+        margin-left: -8px;
+      }
+
+      .gutters-sm>.col,
+      .gutters-sm>[class*=col-] {
+        padding-right: 8px;
+        padding-left: 8px;
+      }
+
+      .card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: 0 solid rgba(0, 0, 0, .125);
+        border-radius: 0.25rem;
+      }
+
+      .card {
+        box-shadow: 0 1px 3px 0 rgb(0 0 0 / 10%), 0 1px 2px 0 rgb(0 0 0 / 6%);
+      }
+
+      .card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: 1px solid rgba(0, 0, 0, 0.125);
+        border-radius: 4px;
+      }
+
+      .card-body {
+        flex: 1 1 auto;
+        min-height: 1px;
+        padding: 1rem;
+      }
+
+      .card-body {
+        flex: 1 1 auto;
+        padding: 1rem 1rem;
+      }
+
+      button.accordion {
+        width: 100%;
+        background-color: whitesmoke;
+        border: none;
+        outline: none;
+        text-align: left;
+        padding: 15px 20px;
+        font-size: 18px;
+        color: #333;
+        cursor: pointer;
+        transition: background-color 0.2s linear;
+      }
+
+      button:not(:disabled),
+      [type="button"]:not(:disabled),
+      [type="reset"]:not(:disabled),
+      [type="submit"]:not(:disabled) {
+        cursor: pointer;
+      }
+
+      .text-dark {
+        color: #212529 !important;
+      }
+
+      .text-center {
+        text-align: center !important;
+      }
+
+      .fs-3 {
+        font-size: calc(1.275rem + 0.3vw) !important;
+      }
+
+      a,
+      a:hover,
+      a:focus,
+      a:active,
+      button,
+      button:focus,
+      input,
+      select,
+      textarea,
+      .slick-slide {
+        outline: none;
+      }
+
+      a,
+      button {
+        cursor: pointer;
+      }
+
+      button,
+      [type="button"],
+      [type="reset"],
+      [type="submit"] {
+        -webkit-appearance: button;
+      }
+
+      button,
+      select {
+        text-transform: none;
+      }
+
+      input,
+      button,
+      select,
+      optgroup,
+      textarea {
+        margin: 0;
+        font-family: inherit;
+        font-size: inherit;
+        line-height: inherit;
+      }
+
+      button {
+        border-radius: 0;
+      }
+
+      .accordion-content {
+        background-color: white;
+        border-left: 1px solid whitesmoke;
+        border-right: 1px solid whitesmoke;
+        padding: 0 20px;
+        max-height: 0;
+        overflow: hidden;
+        font-size: 16px;
+        font-weight: 500;
+        transition: max-height 0.2s ease-in-out;
+        text-align: center;
+      }
+
+      .table-wrapper {
+        margin: 0px 70px 70px;
+        box-shadow: 0px 35px 50px rgb(0 0 0 / 20%);
+        background-color: #efefef;
+      }
+
+      .row>* {
+        flex-shrink: 0;
+        /* width: 100%; */
+        max-width: 100%;
+        padding-right: calc(var(--bs-gutter-x) * .5);
+        padding-left: calc(var(--bs-gutter-x) * .5);
+        margin-top: var(--bs-gutter-y);
+      }
+
+      .fl-table {
+        border-radius: 5px;
+        font-size: 12px;
+        font-weight: normal;
+        border: none;
+        border-collapse: collapse;
+        width: 100%;
+        max-width: 100%;
+        white-space: nowrap;
+        background-color: white;
+      }
+
+
+
+      @media (min-width: 768px) {
+        .flex-md-row {
+          flex-direction: row !important;
+        }
+
+        .flex-column {
+          flex-direction: column !important;
+        }
+      }
+    </style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script src="script.js"></script>
+    <script src="vendor.js"></script>
+    <script>
+
+      const accordionBtns = document.querySelectorAll(".accordion");
+
+      accordionBtns.forEach((accordion) => {
+        accordion.onclick = function () {
+          this.classList.toggle("is-open");
+
+          let content = this.nextElementSibling;
+          console.log(content);
+
+          if (content.style.maxHeight) {
+            //this is if the accordion is open
+            content.style.maxHeight = null;
+          } else {
+            //if the accordion is currently closed
+            content.style.maxHeight = content.scrollHeight + "px";
+            console.log(content.style.maxHeight);
+          }
+        };
+      });
+      function copyToClipboard(element) {
+        var $temp = $("<input>");
+        $("body").append($temp);
+        $temp.val($(element).text()).select();
+        document.execCommand("copy");
+        $temp.remove();
+      }
+
+    </script>
+    <script src="{{ url_for('static', filename = 'script.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'vendor.js') }}"></script>
+
+    <script src="https://unpkg.com/htmx.org@1.1.0"></script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"></script>
+    <script>"https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"</script>
+</body>
+
+</html>

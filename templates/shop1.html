@@ -216,7 +216,7 @@
                             <a class="nav-link" style="color: #000;" href="{{ url_for('cart') }}">Cart</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" style="color: #000;" href="Profile.html">Profile</a>
+                            <a class="nav-link" style="color: #000;" href="{{ url_for('profile') }}">Profile</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" style="color: #000;" href="{{ url_for('wishlist') }}">Wishlist</a>
@@ -232,13 +232,13 @@
             <div class="header__main-right">
                 <div class="header-toolbar-wrap">
                     <div class="header-toolbar">
-                    ]    <div class="search-container right-element ml-3 mr-4 text-white"><input class="" type="search"
+                        ] <div class="search-container right-element ml-3 mr-4 text-white"><input class="" type="search"
                                 placeholder="Search" id="searchField" autocomplete="off" value="">
                             <div class="searchIcon"><i class="fa fa-search"></i></div>
                         </div>
-                           <div class="header-toolbar__item d-block d-lg-none">
+                        <div class="header-toolbar__item d-block d-lg-none">
                             <a href="#offcanvasMenu" class="header-toolbar__btn toolbar-btn menu-btn">
-                                </a>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -259,7 +259,7 @@
                 <!-- <div onclick="window.location.href='productpage.html';" class="product-inner">  -->
                 <div class="row">
                     <div class="col-xl-9 col-lg-8 order-lg-2 md--50" style="margin-bottom: 50px;">
-                     
+
 
                         <div class="shop-products">
                             <div class="row">
@@ -412,7 +412,7 @@
                                             max="1000" id="rangeInput" oninput="maxPrice.value=this.value"
                                             width="400px;">
                                         <div>
-                                            <form action="/filter" class="s-form mt-20" method="get">
+                                            <form action="/shop/filterbyprice" class="s-form mt-20" method="post">
                                                 <b>₹ <input type="number" id="maxPrice" readonly="" name="FilterPrice"
                                                         onkeyup="rangeInput.value=this.value" value="None"
                                                         style="border: none; border-width: 0;  box-shadow: none;"></b>

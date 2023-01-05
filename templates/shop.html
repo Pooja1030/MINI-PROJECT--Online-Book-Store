@@ -362,7 +362,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                
+
                                 </div>
                                 {% endfor %}
 
@@ -460,7 +460,7 @@
                                             max="1000" id="rangeInput" oninput="maxPrice.value=this.value"
                                             width="400px;">
                                         <div>
-                                            <form action="/filter" class="s-form mt-20" method="get">
+                                            <form action="/shop/filterbyprice" class="s-form mt-20" method="post">
                                                 <b>₹ <input type="number" id="maxPrice" readonly="" name="FilterPrice"
                                                         onkeyup="rangeInput.value=this.value" value="None"
                                                         style="border: none; border-width: 0;  box-shadow: none;"></b>
