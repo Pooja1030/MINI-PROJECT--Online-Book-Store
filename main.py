@@ -23,9 +23,25 @@ mysql = MySQL(app)
 def shop():
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     cursor.execute(
-        'SELECT isbn, book_title, book_author, Image_URL_L, price FROM books_data order by Year_of_Publication desc limit 20 ')
+        'SELECT isbn, book_title, book_author, Image_URL_L, price FROM books_data order by Year_of_Publication desc limit 30 ')
     # Fetch one record and return result
     books = cursor.fetchall()
+
+    if 'loggedin' in session:
+        return render_template('shop1.html', books=books)
+    else:
+        return render_template('shop.html', books=books)
+
+
+@app.route('/shop/filterbyprice', methods=['POST'])
+def filterbyprice():
+    FilterPrice = int(request.form['FilterPrice'])
+    if FilterPrice and request.method == 'POST':
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute(
+            'SELECT isbn, book_title, book_author, Image_URL_L, price FROM books_data where price<=%s order by Year_of_Publication desc limit 30 ', [FilterPrice])
+        # Fetch one record and return result
+        books = cursor.fetchall()
 
     if 'loggedin' in session:
         return render_template('shop1.html', books=books)
@@ -98,57 +114,56 @@ def addtocart():
 @app.route('/inc_quantity', methods=['POST'])
 def inc_quantity():
     isbn = request.form['isbn']
-    
+
     if isbn and request.method == 'POST':
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 
         cursor.execute('UPDATE cart set book_count=book_count+1 where isbn=%s and user_id=%s',
                        (isbn, session['id']))
         mysql.connection.commit()
-    
+
     return redirect(url_for('cart'))
-    
+
 
 @app.route('/dec_quantity', methods=['POST'])
 def dec_quantity():
     isbn = request.form['isbn']
-    
+
     if isbn and request.method == 'POST':
-        
+
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute(
-                'SELECT book_count FROM cart where isbn=%s and user_id=%s', (isbn, session['id']))
-            # Fetch one record and return result
+            'SELECT book_count FROM cart where isbn=%s and user_id=%s', (isbn, session['id']))
+        # Fetch one record and return result
         cart_book = cursor.fetchone()
 
-        if cart_book['book_count']==1:
+        if cart_book['book_count'] == 1:
             cursor.execute(
-            'delete from cart where isbn=%s and user_id=%s', (isbn, session['id']))
+                'delete from cart where isbn=%s and user_id=%s', (isbn, session['id']))
             mysql.connection.commit()
-
 
         else:
             cursor.execute('UPDATE cart set book_count=book_count-1 where isbn=%s and user_id=%s',
-                        (isbn, session['id']))
+                           (isbn, session['id']))
             mysql.connection.commit()
-    
+
     return redirect(url_for('cart'))
-    
 
 
 @app.route('/set_quantity', methods=['POST'])
 def set_quantity():
     quantity = request.form['quantity']
     isbn = request.form['isbn']
-    
+
     if quantity and isbn and request.method == 'POST':
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 
         cursor.execute('UPDATE cart set book_count=%s where isbn=%s and user_id=%s',
                        (quantity, isbn, session['id']))
         mysql.connection.commit()
-    
+
     return redirect(url_for('cart'))
+
 
 @app.route('/deletefromcart', methods=['POST'])
 def deletefromcart():
@@ -157,9 +172,10 @@ def deletefromcart():
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute(
             'delete from cart where isbn=%s and user_id=%s', (isbn, session['id']))
-        mysql.connection.commit()        
+        mysql.connection.commit()
         return redirect(url_for('cart'))
- 
+
+
 @app.route('/cart')
 def cart():
     if 'loggedin' in session:
@@ -169,15 +185,55 @@ def cart():
         # Fetch one record and return result
         cart_books = cursor.fetchall()
 
-        cursor.execute(
-            'select sum(price*book_count)as cart_total from cart natural left outer join books_data where user_id=%s', [session['id']])
-        cart_total = cursor.fetchone()
         if cart_books:
+            cursor.execute(
+                'select sum(price*book_count)as cart_total from cart natural left outer join books_data where user_id=%s', [session['id']])
+            cart_total = cursor.fetchone()
             return render_template('cart.html', cart_books=cart_books, cart_total=cart_total)
         else:
             return render_template('cart_empty.html')
     else:
         return redirect(url_for('login'))
+
+
+@app.route('/payment', methods=['POST', 'GET'])
+def payment():
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute(
+        'select * from cart natural left outer join books_data where user_id=%s', [session['id']])
+    # Fetch one record and return result
+    cart_books = cursor.fetchall()
+    total_items = len(cart_books)
+
+    cursor.execute(
+        'select sum(price*book_count)as cart_total from cart natural left outer join books_data where user_id=%s', [session['id']])
+    cart_total = cursor.fetchone()
+
+    cursor.execute(
+        'select sum(price*book_count)as cart_total from cart natural left outer join books_data where user_id=%s', [session['id']])
+    cart_total = cursor.fetchone()
+    cart_total = cart_total['cart_total']
+
+    if request.method == 'POST' and 'fname' in request.form and 'lname' in request.form and 'phone' in request.form: # and 'address' in request.form and 'city' in request.form and 'zip' in request.form and 'paymentmethod' in request.form:
+        # Create variables for easy access
+        fname = request.form['fname']
+        lname = request.form['lname']
+        phone = int(request.form['phone'])
+        # address = request.form['address']
+        # city = request.form['city']
+        # zip = int(request.form['zip'])
+        # payment_method = request.form['paymentMethod']
+
+        # cursor.execute('INSERT INTO orders VALUES (NULL, %s, %s, %s, %s,%s, %s, %s, %s,%s )',
+        #                (session[id], fname, lname, phone, address, city, zip, payment_method, cart_total))
+        # mysql.connection.commit()
+        
+        cursor.execute('DELETE FROM cart where user_id=%s', [session['id']])
+        mysql.connection.commit()
+
+        return render_template('orderplaced.html')
+
+    return render_template('paymentpage.html', total_items=total_items, cart_books=cart_books, cart_total=cart_total)
 
 
 @app.route('/wishlist')
@@ -228,6 +284,7 @@ def addtowishlist():
     else:
         return redirect(url_for('login'))
 
+
 @app.route('/deletefromwishlist', methods=['POST'])
 def deletefromwishlist():
     isbn = request.form['isbn']
@@ -235,9 +292,9 @@ def deletefromwishlist():
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute(
             'delete from wishlist where isbn=%s and user_id=%s', (isbn, session['id']))
-        mysql.connection.commit()        
+        mysql.connection.commit()
         return redirect(url_for('wishlist'))
-        
+
 
 @app.route('/home')
 def home():
