@@ -43,38 +43,22 @@
       </nav>
       <div class="header__main-right">
         <div class="header-toolbar-wrap">
-          <div class="header-toolbar">
-            <!-- <div class="header-toolbar__item header-toolbar--search-btn">
-                        <a href="#searchForm" class="header-toolbar__btn toolbar-btn">
-                            <i class="fas fa-search" style="color: rgb(25, 22, 22);"></i>
-                        </a>
-                    </div> -->
-            <div class="search-container right-element ml-3 mr-4 text-white"><input class="" type="search"
-                placeholder="Search" id="searchField" autocomplete="off" value="">
-              <div class="searchIcon"><i class="fa fa-search"></i></div>
+            <div class="header-toolbar">
+                <div class="search-container right-element ml-3 mr-4 text-white">
+                    <form method="post" action="/shop/search">
+                    <input class="" type="search" name="searchbook"
+                        placeholder="Search book or author" id="searchField" autocomplete="off" value="">
+                        <button type="submit" style="border: none; size: 0.01px;"></button>
+                    <div class="searchIcon"><i class="fa fa-search"></i></div>
+                </form>
+                </div>
+                <div class="header-toolbar__item d-block d-lg-none">
+                    <a href="#offcanvasMenu" class="header-toolbar__btn toolbar-btn menu-btn">
+                    </a>
+                </div>
             </div>
-            <!-- <div class="header-toolbar__item header-toolbar--minicart-btn">
-                        <a href="Addtocartpage.html" class="header-toolbar__btn toolbar-btn">
-                          <i class="fas fa-thin fa-cart-shopping" style="color: rgb(34, 34, 34);"></i>
-                            <span>0</span>
-                        </a>
-                    </div> -->
-            <div class="header-toolbar__item d-block d-lg-none">
-              <a href="#offcanvasMenu" class="header-toolbar__btn toolbar-btn menu-btn">
-                <!-- <div class="hamburger-icon">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div> -->
-              </a>
-            </div>
-          </div>
         </div>
-      </div>
-
+    </div>
 
       <!-- </div> -->
   </header>
@@ -120,7 +104,7 @@
               <form action="{{ url_for('payment') }}" method="post" form class="needs-validation" novalidate autocomplete="off" >
                 <h4 class="mb-3">Delivery address</h4>
                 <div class="row g-3">
-                  <div class="col-sm-6">
+                  <div class="col-sm-6" style="margin: 10px 0;">
                     <label for="firstName" class="form-label">First name</label>
                     <input type="text" name="fname"  class="form-control" id="firstName" placeholder="" value="" required />
                     <div class="invalid-feedback">
@@ -128,7 +112,7 @@
                     </div>
                   </div>
 
-                  <div class="col-sm-6">
+                  <div class="col-sm-6" style="margin: 10px 0;">
                     <label for="lastName" class="form-label">Last name</label>
                     <input type="text" name="lname" class="form-control" id="lastName" placeholder="" value="" required />
                     <div class="invalid-feedback">
@@ -136,7 +120,7 @@
                     </div>
                   </div>
 
-                  <div class="col-12">
+                  <div class="col-12" style="margin: 10px 0;">
                     <label for="phone" class="form-label">Phone</label>
                     <input type="text" name="phone" class="form-control" id="phone" placeholder="" required/>
                     <div class="invalid-feedback">
@@ -144,7 +128,7 @@
                     </div>
                   </div>
 
-                  <div class="col-12">
+                  <div class="col-12" style="margin: 10px 0;">
                     <label for="address" class="form-label">Address</label>
                     <input type="text" name="address" class="form-control" id="address" placeholder="1234 Main St" required />
                     <div class="invalid-feedback">
@@ -152,13 +136,13 @@
                     </div>
                   </div>
 
-                  <div class="col-12">
+                  <div class="col-12" style="margin: 10px 0;">
                     <label for="city" class="form-label">City</label>
                     <input type="text" name="city"  class="form-control" id="city" placeholder="" required />
                   </div>
 
   
-                  <div class="col-md-3">
+                  <div class="col-md-3" style="margin: 10px 0;">
                     <label for="zip" class="form-label">Zip</label>
                     <input type="text" name="zip" class="form-control" id="zip" placeholder="" required />
                     <div class="invalid-feedback">Zip code required.</div>
@@ -171,7 +155,7 @@
 
                 <h4 class="mb-3">Payment</h4>
 
-                <div class="my-3">
+                <div class="my-3" style="margin: 10px 0;">
                   <div class="form-check">
                     <input class="form-check-input" type="radio" name="paymentMethod" id="paypal" 
                       required="" checked="" />

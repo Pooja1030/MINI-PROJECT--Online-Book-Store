@@ -1,6 +1,6 @@
 {% extends 'layout.html' %}
 
-{% block title %}Order placed{% endblock %}
+{% block title %}Wishlist{% endblock %}
 
 {% block content %}
   <div class="wrapper">
@@ -30,7 +30,8 @@
                             <a class="nav-link" style="color: #000;" href="{{ url_for('profile') }}">Profile</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" style="color: #000;" href="{{ url_for('wishlist') }}">Wishlist</a>
+                            <a class="nav-link" style="color: #000;" href="{{ url_for('wishlist') }}">Wishlist<span
+                                    class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" style="color: #000;" href="{{ url_for('logout') }}">Logout</a>
@@ -70,9 +71,9 @@
                             <div class="col-12">
                                 <div class="table-content table-responsive">
                                     <div class="text-center m-4">
-                                        <h1>Order placed!</h1>
+                                        <h1>No results found</h1>
                                         <a href="{{ url_for('home') }}">
-                                        <button class="btn btn-size-md mt-2">Back to Home</button>
+                                        <button class="btn btn-size-md mt-2">Back to Shop</button>
                                     </a>
                                     </div>
                                 </div>

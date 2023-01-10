@@ -232,9 +232,13 @@
             <div class="header__main-right">
                 <div class="header-toolbar-wrap">
                     <div class="header-toolbar">
-                        ] <div class="search-container right-element ml-3 mr-4 text-white"><input class="" type="search"
-                                placeholder="Search" id="searchField" autocomplete="off" value="">
+                        <div class="search-container right-element ml-3 mr-4 text-white">
+                            <form method="post" action="/shop/search">
+                            <input class="" type="search" name="searchbook"
+                                placeholder="Search book or author" id="searchField" autocomplete="off" value="">
+                                <button type="submit" style="border: none; size: 0.01px;"></button>
                             <div class="searchIcon"><i class="fa fa-search"></i></div>
+                        </form>
                         </div>
                         <div class="header-toolbar__item d-block d-lg-none">
                             <a href="#offcanvasMenu" class="header-toolbar__btn toolbar-btn menu-btn">
@@ -385,7 +389,7 @@
                                 <h3 class="widget-title mb--25">Ratings</h3>
                                 <ul class="widget-list category-list">
                                     <li>
-
+                                        <form action="/shop/filterbyprice">
                                         <div class="dropdown">
                                             <button class="btn btn-secondary dropdown-toggle" type="button"
                                                 data-bs-toggle="dropdown" aria-expanded="false">
@@ -398,6 +402,7 @@
                                                 <li><a class="dropdown-item" href="#">1 star and above</a></li>
                                             </ul>
                                         </div>
+                                    </form>
                                     </li>
 
 
