@@ -49,6 +49,43 @@ def filterbyprice():
         return render_template('shop.html', books=books)
 
 
+
+@app.route('/shop/filterbyrating', methods=['POST'])
+def filterbyrating():
+    rating = int(request.form['rating'])
+    if rating and request.method == 'POST':
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute(
+            'SELECT isbn, book_title, book_author, Image_URL_L, price FROM books_data where ratings>=%s order by Year_of_Publication desc limit 30 ', [rating])
+        # Fetch one record and return result
+        books = cursor.fetchall()
+
+    if 'loggedin' in session:
+        return render_template('shop1.html', books=books)
+    else:
+        return render_template('shop.html', books=books)
+        
+
+@app.route('/shop/search', methods=['POST'])
+def search():
+    searchbook = (request.form['searchbook'])
+    if searchbook and request.method == 'POST':
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute(
+            'SELECT isbn, book_title, book_author, Image_URL_L, price FROM books_data where Book_Title like %s or Book_Author like %s order by Year_of_Publication desc limit 30 ', ("%"+searchbook+"%","%"+searchbook+"%"))
+        # Fetch one record and return result
+        books = cursor.fetchall()
+
+        if books:
+
+            if 'loggedin' in session:
+                return render_template('shop1.html', books=books)
+            else:
+                return render_template('shop.html', books=books)
+        else:
+            return render_template('search_empty.html')
+
+
 @app.route('/shop/<isbn>')
 def productpage(isbn):
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
@@ -117,10 +154,21 @@ def inc_quantity():
 
     if isbn and request.method == 'POST':
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute(
+            'SELECT book_count FROM cart where isbn=%s and user_id=%s', (isbn, session['id']))
+        # Fetch one record and return result
+        cart_book = cursor.fetchone()
 
-        cursor.execute('UPDATE cart set book_count=book_count+1 where isbn=%s and user_id=%s',
-                       (isbn, session['id']))
-        mysql.connection.commit()
+        cursor.execute(
+                'select sum(book_count) as stock from stock where isbn=%s', [isbn])
+            # Fetch one record and return result
+        stock = cursor.fetchone()
+        stock = stock['stock']
+        
+        if stock>cart_book['book_count']+1:
+            cursor.execute('UPDATE cart set book_count=book_count+1 where isbn=%s and user_id=%s',
+                        (isbn, session['id']))
+            mysql.connection.commit()
 
     return redirect(url_for('cart'))
 
@@ -155,12 +203,25 @@ def set_quantity():
     quantity = request.form['quantity']
     isbn = request.form['isbn']
 
-    if quantity and isbn and request.method == 'POST':
+    if isbn and request.method == 'POST':
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute(
+            'SELECT book_count FROM cart where isbn=%s and user_id=%s', (isbn, session['id']))
+        # Fetch one record and return result
+        cart_book = cursor.fetchone()
 
-        cursor.execute('UPDATE cart set book_count=%s where isbn=%s and user_id=%s',
-                       (quantity, isbn, session['id']))
-        mysql.connection.commit()
+        cursor.execute(
+                'select sum(book_count) as stock from stock where isbn=%s', [isbn])
+            # Fetch one record and return result
+        stock = cursor.fetchone()
+        stock = stock['stock']
+        
+        if stock>int(quantity):
+
+
+            cursor.execute('UPDATE cart set book_count=%s where isbn=%s and user_id=%s',
+                        (quantity, isbn, session['id']))
+            mysql.connection.commit()
 
     return redirect(url_for('cart'))
 
