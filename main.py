@@ -1,31 +1,27 @@
-from flask import Flask
-from flask import render_template
-from flask import request, Flask, redirect, url_for, request, session
-from flask_mysqldb import MySQL
-import MySQLdb.cursors
-import re
+from flask import Flask, render_template, request, redirect, url_for, session
+import os
+import psycopg2
 
 app = Flask(__name__)
+app.secret_key = 'your_secret_key'
 
-app.secret_key = 'your secret key'
+# PostgreSQL configuration
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')  # Use environment variable
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Enter your database connection details below
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'MySQLServer8.0.29'
-app.config['MYSQL_DB'] = 'bookstore'
-
-# Intialize MySQL
-mysql = MySQL(app)
-
+# Function to establish PostgreSQL connection
+def get_db_connection():
+    conn = psycopg2.connect(app.config['SQLALCHEMY_DATABASE_URI'])
+    return conn
 
 @app.route('/shop')
 def shop():
-    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    conn = get_db_connection()
+    cursor = conn.cursor()
     cursor.execute(
-        'SELECT isbn, book_title, book_author, Image_URL_L, price FROM books_data order by Year_of_Publication desc limit 30 ')
-    # Fetch one record and return result
+        'SELECT isbn, book_title, book_author, Image_URL_L, price FROM books_data ORDER BY Year_of_Publication DESC LIMIT 30')
     books = cursor.fetchall()
+    conn.close()
 
     if 'loggedin' in session:
         return render_template('shop1.html', books=books)
@@ -36,68 +32,66 @@ def shop():
 @app.route('/shop/filterbyprice', methods=['POST'])
 def filterbyprice():
     FilterPrice = int(request.form['FilterPrice'])
-    if FilterPrice and request.method == 'POST':
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute(
-            'SELECT isbn, book_title, book_author, Image_URL_L, price FROM books_data where price<=%s order by Year_of_Publication desc limit 30 ', [FilterPrice])
-        # Fetch one record and return result
-        books = cursor.fetchall()
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        'SELECT isbn, book_title, book_author, Image_URL_L, price FROM books_data WHERE price <= %s ORDER BY Year_of_Publication DESC LIMIT 30', (FilterPrice,))
+    books = cursor.fetchall()
+    conn.close()
 
     if 'loggedin' in session:
         return render_template('shop1.html', books=books)
     else:
         return render_template('shop.html', books=books)
-
 
 
 @app.route('/shop/filterbyrating', methods=['POST'])
 def filterbyrating():
     rating = int(request.form['rating'])
-    if rating and request.method == 'POST':
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute(
-            'SELECT isbn, book_title, book_author, Image_URL_L, price FROM books_data where ratings>=%s order by Year_of_Publication desc limit 30 ', [rating])
-        # Fetch one record and return result
-        books = cursor.fetchall()
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        'SELECT isbn, book_title, book_author, Image_URL_L, price FROM books_data WHERE ratings >= %s ORDER BY Year_of_Publication DESC LIMIT 30', (rating,))
+    books = cursor.fetchall()
+    conn.close()
 
     if 'loggedin' in session:
         return render_template('shop1.html', books=books)
     else:
         return render_template('shop.html', books=books)
-        
+
 
 @app.route('/shop/search', methods=['POST'])
 def search():
-    searchbook = (request.form['searchbook'])
-    if searchbook and request.method == 'POST':
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute(
-            'SELECT isbn, book_title, book_author, Image_URL_L, price FROM books_data where Book_Title like %s or Book_Author like %s order by Year_of_Publication desc limit 30 ', ("%"+searchbook+"%","%"+searchbook+"%"))
-        # Fetch one record and return result
-        books = cursor.fetchall()
+    searchbook = request.form['searchbook']
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        'SELECT isbn, book_title, book_author, Image_URL_L, price FROM books_data WHERE Book_Title LIKE %s OR Book_Author LIKE %s ORDER BY Year_of_Publication DESC LIMIT 30', ('%' + searchbook + '%', '%' + searchbook + '%'))
+    books = cursor.fetchall()
+    conn.close()
 
-        if books:
-
-            if 'loggedin' in session:
-                return render_template('shop1.html', books=books)
-            else:
-                return render_template('shop.html', books=books)
+    if books:
+        if 'loggedin' in session:
+            return render_template('shop1.html', books=books)
         else:
-            return render_template('search_empty.html')
+            return render_template('shop.html', books=books)
+    else:
+        return render_template('search_empty.html')
 
 
 @app.route('/shop/<isbn>')
 def productpage(isbn):
-    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    conn = get_db_connection()
+    cursor = conn.cursor()
     cursor.execute(
-        'SELECT isbn, book_title, book_author, price, Image_URL_L, year_of_publication FROM books_data WHERE isbn = %s', [isbn])
+        'SELECT isbn, book_title, book_author, price, Image_URL_L, year_of_publication FROM books_data WHERE isbn = %s', (isbn,))
     book = cursor.fetchone()
 
     wishlist_btn = 'Add to wishlist'
     if 'loggedin' in session:
         cursor.execute(
-            'SELECT isbn FROM wishlist where isbn=%s and user_id=%s', (isbn, session['id']))
-        # Fetch one record and return result
+            'SELECT isbn FROM wishlist WHERE isbn=%s AND user_id=%s', (isbn, session['id']))
         wishlist_book = cursor.fetchone()
         if wishlist_book:
             wishlist_btn = 'Remove from wishlist'
@@ -105,9 +99,9 @@ def productpage(isbn):
             wishlist_btn = 'Add to wishlist'
 
     cursor.execute(
-        'SELECT book_title, book_author, Image_URL_L, price FROM books_data where Year_of_Publication=%s limit 8 ', [book['year_of_publication']])
-    # Fetch one record and return result
+        'SELECT book_title, book_author, Image_URL_L, price FROM books_data WHERE Year_of_Publication = %s LIMIT 8', (book['year_of_publication'],))
     more = cursor.fetchall()
+    conn.close()
 
     if book:
         if 'loggedin' in session:
@@ -121,29 +115,26 @@ def addtocart():
     quantity = int(request.form['quantity'])
     isbn = request.form['isbn']
     if 'loggedin' in session:
-
-        if quantity and isbn and request.method == 'POST':
-            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        if quantity and isbn:
+            conn = get_db_connection()
+            cursor = conn.cursor()
             cursor.execute(
-                'SELECT isbn, book_title, book_author, Image_URL_L, price FROM books_data where isbn=%s', [isbn])
-            # Fetch one record and return result
+                'SELECT isbn, book_title, book_author, Image_URL_L, price FROM books_data WHERE isbn=%s', (isbn,))
             book = cursor.fetchone()
 
             cursor.execute(
-                'SELECT isbn FROM cart where isbn=%s and user_id=%s', (isbn, session['id']))
-            # Fetch one record and return result
+                'SELECT isbn FROM cart WHERE isbn=%s AND user_id=%s', (isbn, session['id']))
             cart_book = cursor.fetchone()
             if cart_book:
-                cursor.execute('UPDATE cart set book_count=book_count+%s where isbn=%s and user_id=%s',
+                cursor.execute('UPDATE cart SET book_count=book_count+%s WHERE isbn=%s AND user_id=%s',
                                (quantity, isbn, session['id']))
-                mysql.connection.commit()
+                conn.commit()
             else:
                 cursor.execute('INSERT INTO cart VALUES (%s, %s, %s, %s)',
-                               (session['id'], isbn,  quantity, book['price']))
-                mysql.connection.commit()
-
+                               (session['id'], isbn, quantity, book['price']))
+                conn.commit()
+            conn.close()
         return redirect(url_for('shop'))
-        # User is not loggedin redirect to login page
     else:
         return redirect(url_for('login'))
 
@@ -151,24 +142,22 @@ def addtocart():
 @app.route('/inc_quantity', methods=['POST'])
 def inc_quantity():
     isbn = request.form['isbn']
-
-    if isbn and request.method == 'POST':
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    if isbn:
+        conn = get_db_connection()
+        cursor = conn.cursor()
         cursor.execute(
-            'SELECT book_count FROM cart where isbn=%s and user_id=%s', (isbn, session['id']))
-        # Fetch one record and return result
+            'SELECT book_count FROM cart WHERE isbn=%s AND user_id=%s', (isbn, session['id']))
         cart_book = cursor.fetchone()
 
         cursor.execute(
-                'select sum(book_count) as stock from stock where isbn=%s', [isbn])
-            # Fetch one record and return result
-        stock = cursor.fetchone()
-        stock = stock['stock']
-        
-        if stock>cart_book['book_count']+1:
-            cursor.execute('UPDATE cart set book_count=book_count+1 where isbn=%s and user_id=%s',
-                        (isbn, session['id']))
-            mysql.connection.commit()
+            'SELECT SUM(book_count) AS stock FROM stock WHERE isbn=%s', (isbn,))
+        stock = cursor.fetchone()['stock']
+
+        if stock > cart_book['book_count'] + 1:
+            cursor.execute('UPDATE cart SET book_count=book_count+1 WHERE isbn=%s AND user_id=%s',
+                           (isbn, session['id']))
+            conn.commit()
+        conn.close()
 
     return redirect(url_for('cart'))
 
@@ -176,52 +165,46 @@ def inc_quantity():
 @app.route('/dec_quantity', methods=['POST'])
 def dec_quantity():
     isbn = request.form['isbn']
-
-    if isbn and request.method == 'POST':
-
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    if isbn:
+        conn = get_db_connection()
+        cursor = conn.cursor()
         cursor.execute(
-            'SELECT book_count FROM cart where isbn=%s and user_id=%s', (isbn, session['id']))
-        # Fetch one record and return result
+            'SELECT book_count FROM cart WHERE isbn=%s AND user_id=%s', (isbn, session['id']))
         cart_book = cursor.fetchone()
 
         if cart_book['book_count'] == 1:
             cursor.execute(
-                'delete from cart where isbn=%s and user_id=%s', (isbn, session['id']))
-            mysql.connection.commit()
-
+                'DELETE FROM cart WHERE isbn=%s AND user_id=%s', (isbn, session['id']))
+            conn.commit()
         else:
-            cursor.execute('UPDATE cart set book_count=book_count-1 where isbn=%s and user_id=%s',
+            cursor.execute('UPDATE cart SET book_count=book_count-1 WHERE isbn=%s AND user_id=%s',
                            (isbn, session['id']))
-            mysql.connection.commit()
+            conn.commit()
+        conn.close()
 
     return redirect(url_for('cart'))
 
 
 @app.route('/set_quantity', methods=['POST'])
 def set_quantity():
-    quantity = request.form['quantity']
+    quantity = int(request.form['quantity'])
     isbn = request.form['isbn']
-
-    if isbn and request.method == 'POST':
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    if isbn:
+        conn = get_db_connection()
+        cursor = conn.cursor()
         cursor.execute(
-            'SELECT book_count FROM cart where isbn=%s and user_id=%s', (isbn, session['id']))
-        # Fetch one record and return result
+            'SELECT book_count FROM cart WHERE isbn=%s AND user_id=%s', (isbn, session['id']))
         cart_book = cursor.fetchone()
 
         cursor.execute(
-                'select sum(book_count) as stock from stock where isbn=%s', [isbn])
-            # Fetch one record and return result
-        stock = cursor.fetchone()
-        stock = stock['stock']
-        
-        if stock>int(quantity):
+            'SELECT SUM(book_count) AS stock FROM stock WHERE isbn=%s', (isbn,))
+        stock = cursor.fetchone()['stock']
 
-
-            cursor.execute('UPDATE cart set book_count=%s where isbn=%s and user_id=%s',
-                        (quantity, isbn, session['id']))
-            mysql.connection.commit()
+        if stock > quantity:
+            cursor.execute('UPDATE cart SET book_count=%s WHERE isbn=%s AND user_id=%s',
+                           (quantity, isbn, session['id']))
+            conn.commit()
+        conn.close()
 
     return redirect(url_for('cart'))
 
@@ -229,29 +212,33 @@ def set_quantity():
 @app.route('/deletefromcart', methods=['POST'])
 def deletefromcart():
     isbn = request.form['isbn']
-    if isbn and request.method == 'POST':
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    if isbn:
+        conn = get_db_connection()
+        cursor = conn.cursor()
         cursor.execute(
-            'delete from cart where isbn=%s and user_id=%s', (isbn, session['id']))
-        mysql.connection.commit()
+            'DELETE FROM cart WHERE isbn=%s AND user_id=%s', (isbn, session['id']))
+        conn.commit()
+        conn.close()
         return redirect(url_for('cart'))
 
 
 @app.route('/cart')
 def cart():
     if 'loggedin' in session:
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        conn = get_db_connection()
+        cursor = conn.cursor()
         cursor.execute(
-            'select * from cart natural left outer join books_data where user_id=%s', [session['id']])
-        # Fetch one record and return result
+            'SELECT * FROM cart NATURAL LEFT OUTER JOIN books_data WHERE user_id=%s', (session['id'],))
         cart_books = cursor.fetchall()
 
         if cart_books:
             cursor.execute(
-                'select sum(price*book_count)as cart_total from cart natural left outer join books_data where user_id=%s', [session['id']])
-            cart_total = cursor.fetchone()
+                'SELECT SUM(price*book_count) AS cart_total FROM cart NATURAL LEFT OUTER JOIN books_data WHERE user_id=%s', (session['id'],))
+            cart_total = cursor.fetchone()['cart_total']
+            conn.close()
             return render_template('cart.html', cart_books=cart_books, cart_total=cart_total)
         else:
+            conn.close()
             return render_template('cart_empty.html')
     else:
         return redirect(url_for('login'))
@@ -259,57 +246,63 @@ def cart():
 
 @app.route('/payment', methods=['POST', 'GET'])
 def payment():
-    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    conn = get_db_connection()
+    cursor = conn.cursor()
     cursor.execute(
-        'select * from cart natural left outer join books_data where user_id=%s', [session['id']])
-    # Fetch one record and return result
+        'SELECT * FROM cart NATURAL LEFT OUTER JOIN books_data WHERE user_id=%s', (session['id'],))
     cart_books = cursor.fetchall()
     total_items = len(cart_books)
 
     cursor.execute(
-        'select sum(price*book_count)as cart_total from cart natural left outer join books_data where user_id=%s', [session['id']])
-    cart_total = cursor.fetchone()
+        'SELECT SUM(price*book_count) AS cart_total FROM cart NATURAL LEFT OUTER JOIN books_data WHERE user_id=%s', (session['id'],))
+    cart_total = cursor.fetchone()['cart_total']
 
-    cursor.execute(
-        'select sum(price*book_count)as cart_total from cart natural left outer join books_data where user_id=%s', [session['id']])
-    cart_total = cursor.fetchone()
-    cart_total = cart_total['cart_total']
-
-    if request.method == 'POST' and 'fname' in request.form and 'lname' in request.form and 'phone' in request.form: # and 'address' in request.form and 'city' in request.form and 'zip' in request.form and 'paymentmethod' in request.form:
-        # Create variables for easy access
+    if request.method == 'POST' and 'fname' in request.form:
         fname = request.form['fname']
         lname = request.form['lname']
-        phone = int(request.form['phone'])
-        # address = request.form['address']
-        # city = request.form['city']
-        # zip = int(request.form['zip'])
-        # payment_method = request.form['paymentMethod']
+        address = request.form['address']
+        city = request.form['city']
+        state = request.form['state']
+        zip = request.form['zip']
+        cardname = request.form['cardname']
+        cardnumber = request.form['cardnumber']
+        expmonth = request.form['expmonth']
+        expyear = request.form['expyear']
+        cvv = request.form['cvv']
 
-        # cursor.execute('INSERT INTO orders VALUES (NULL, %s, %s, %s, %s,%s, %s, %s, %s,%s )',
-        #                (session[id], fname, lname, phone, address, city, zip, payment_method, cart_total))
-        # mysql.connection.commit()
-        
-        cursor.execute('DELETE FROM cart where user_id=%s', [session['id']])
-        mysql.connection.commit()
+        cursor.execute('INSERT INTO payment VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)',
+                       (session['id'], fname, lname, address, city, state, zip, cardname, cardnumber, expmonth, expyear, cvv))
+        conn.commit()
 
-        return render_template('orderplaced.html')
+        for book in cart_books:
+            cursor.execute('INSERT INTO purchase_history VALUES (%s, %s, %s, %s, %s, %s, %s)',
+                           (session['id'], book['isbn'], book['book_title'], book['book_author'], book['price'], book['book_count'], book['Image_URL_L']))
+            conn.commit()
 
-    return render_template('paymentpage.html', total_items=total_items, cart_books=cart_books, cart_total=cart_total)
+        cursor.execute('DELETE FROM cart WHERE user_id=%s', (session['id'],))
+        conn.commit()
+
+        conn.close()
+        return render_template('payment.html', total_items=total_items, cart_total=cart_total)
+    elif 'loggedin' in session:
+        conn.close()
+        return render_template('payment.html', total_items=total_items, cart_total=cart_total)
+    else:
+        conn.close()
+        return redirect(url_for('login'))
 
 
-@app.route('/wishlist')
+@app.route('/wishlist', methods=['POST', 'GET'])
 def wishlist():
     if 'loggedin' in session:
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        conn = get_db_connection()
+        cursor = conn.cursor()
         cursor.execute(
-            'select * from wishlist natural left outer join books_data where user_id=%s', [session['id']])
-        # Fetch one record and return result
+            'SELECT * FROM wishlist NATURAL LEFT OUTER JOIN books_data WHERE user_id=%s', (session['id'],))
         wishlist_books = cursor.fetchall()
+        conn.close()
 
-        if wishlist_books:
-            return render_template('wishlist.html', wishlist_books=wishlist_books)
-        else:
-            return render_template('wishlist_empty.html')
+        return render_template('wishlist.html', wishlist_books=wishlist_books)
     else:
         return redirect(url_for('login'))
 
@@ -318,30 +311,22 @@ def wishlist():
 def addtowishlist():
     isbn = request.form['isbn']
     if 'loggedin' in session:
-
-        if isbn and request.method == 'POST':
-            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        if isbn:
+            conn = get_db_connection()
+            cursor = conn.cursor()
             cursor.execute(
-                'SELECT isbn FROM books_data where isbn=%s', [isbn])
-            # Fetch one record and return result
+                'SELECT isbn, book_title, book_author, Image_URL_L, price FROM books_data WHERE isbn=%s', (isbn,))
             book = cursor.fetchone()
 
             cursor.execute(
-                'SELECT isbn FROM wishlist where isbn=%s and user_id=%s', (isbn, session['id']))
-            # Fetch one record and return result
+                'SELECT isbn FROM wishlist WHERE isbn=%s AND user_id=%s', (isbn, session['id']))
             wishlist_book = cursor.fetchone()
-            # delete from wishlist if it's already there
-            if wishlist_book:
-                cursor.execute(
-                    'delete from wishlist where isbn=%s and user_id=%s', (isbn, session['id']))
-                mysql.connection.commit()
-            else:
-                cursor.execute(
-                    'INSERT INTO wishlist VALUES (%s, %s)', ((session['id']), isbn))
-                mysql.connection.commit()
-
+            if not wishlist_book:
+                cursor.execute('INSERT INTO wishlist VALUES (%s, %s, %s, %s)',
+                               (session['id'], isbn, book['price'], book['Image_URL_L']))
+                conn.commit()
+            conn.close()
         return redirect(url_for('shop'))
-        # User is not loggedin redirect to login page
     else:
         return redirect(url_for('login'))
 
@@ -349,148 +334,89 @@ def addtowishlist():
 @app.route('/deletefromwishlist', methods=['POST'])
 def deletefromwishlist():
     isbn = request.form['isbn']
-    if isbn and request.method == 'POST':
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    if isbn:
+        conn = get_db_connection()
+        cursor = conn.cursor()
         cursor.execute(
-            'delete from wishlist where isbn=%s and user_id=%s', (isbn, session['id']))
-        mysql.connection.commit()
+            'DELETE FROM wishlist WHERE isbn=%s AND user_id=%s', (isbn, session['id']))
+        conn.commit()
+        conn.close()
         return redirect(url_for('wishlist'))
 
 
-@app.route('/home')
+@app.route('/')
 def home():
-    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cursor.execute(
-        'SELECT book_title, book_author, Image_URL_L, price FROM books_data order by Year_of_Publication desc limit 8')
-    # Fetch one record and return result
-    new = cursor.fetchall()
-
-    cursor.execute(
-        'SELECT book_title, book_author, Image_URL_L, price FROM books_data order by ratings desc limit 8')
-    # Fetch one record and return result
-    featured = cursor.fetchall()
-
-    cursor.execute(
-        'SELECT book_title, book_author, Image_URL_L, price FROM books_data order by Year_of_Publication limit 8')
-    # Fetch one record and return result
-    classic = cursor.fetchall()
-
-    # Check if user is loggedin
-
-    if 'loggedin' in session:
-        return render_template('home1.html', new=new, classic=classic, featured=featured)
-    else:
-        return render_template('home.html', new=new, classic=classic, featured=featured)
+    return render_template('home.html')
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['POST', 'GET'])
 def login():
-    # Output message if something goes wrong...
-    msg = ''
-    # Check if "username" and "password" POST requests exist (user submitted form)
-    if request.method == 'POST' and 'email' in request.form and 'password' in request.form:
-        # Create variables for easy access
-        email = request.form['email']
+    if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
+        username = request.form['username']
         password = request.form['password']
-        # Check if account exists using MySQL
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        conn = get_db_connection()
+        cursor = conn.cursor()
         cursor.execute(
-            'SELECT * FROM users WHERE user_email = %s AND user_password = %s', (email, password))
-        # Fetch one record and return result
+            'SELECT * FROM account WHERE username = %s AND password = %s', (username, password,))
         account = cursor.fetchone()
-        # If account exists in accounts table in out database
+        conn.close()
+
         if account:
-            # Create session data, we can access this data in other routes
             session['loggedin'] = True
-            session['id'] = account['user_id']
-            session['email'] = account['user_email']
-            # Redirect to home page
-            # return 'Logged in successfully!'
+            session['id'] = account[0]
+            session['username'] = account[1]
             return redirect(url_for('home'))
-
         else:
-            # Account doesnt exist or username/password incorrect
-            msg = 'Incorrect email/password. Try again.'
+            return render_template('login.html', message='Incorrect username/password!')
 
-    return render_template('login.html', msg=msg)
+    return render_template('login.html')
 
 
 @app.route('/logout')
 def logout():
-    # Remove session data, this will log the user out
     session.pop('loggedin', None)
     session.pop('id', None)
-    session.pop('email', None)
-    # Redirect to login page
+    session.pop('username', None)
     return redirect(url_for('home'))
 
 
-@app.route('/signup', methods=['GET', 'POST'])
+@app.route('/signup', methods=['POST', 'GET'])
 def signup():
-    # Output message if something goes wrong...
-    msg = ''
-    # Check if "username", "password" and "email" POST requests exist (user submitted form)
-    if request.method == 'POST' and 'fname' in request.form and 'lname' in request.form and 'email' in request.form and 'password' in request.form and 'password2' in request.form:
-        # Create variables for easy access
-        fname = request.form['fname']
-        lname = request.form['lname']
-        email = request.form['email']
+    if request.method == 'POST' and 'username' in request.form and 'password' in request.form and 'email' in request.form:
+        username = request.form['username']
         password = request.form['password']
-        password2 = request.form['password2']
-
-        # Check if account exists using MySQL
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('SELECT * FROM users WHERE user_email = %s', [email])
+        email = request.form['email']
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute(
+            'SELECT * FROM account WHERE username = %s', (username,))
         account = cursor.fetchone()
-        # If account exists show error and validation checks
         if account:
-            msg = 'Account already exists!'
-        elif not re.match(r'[^@]+@[^@]+\.[^@]+', email):
-            msg = 'Invalid email address!'
-        elif not password == password2:
-            msg = 'Passwords do not match!'
-        elif not email or not password or not password2:
-            msg = 'Please fill out the form!'
+            return render_template('signup.html', message='Username already exists!')
         else:
-            # Account doesnt exists and the form data is valid, now insert new account into accounts table
-            cursor.execute('INSERT INTO users VALUES (NULL, %s, %s, %s, %s)',
-                           (fname, lname,  email, password))
-            mysql.connection.commit()
-
-            # Log in to the account
             cursor.execute(
-                'SELECT user_id FROM users WHERE user_email = %s', [email])
-            # Fetch one record and return result
-            account = cursor.fetchone()
-            # If account exists in accounts table in out database
-            if account:
-                # Create session data, we can access this data in other routes
-                session['loggedin'] = True
-                session['id'] = account['user_id']
-                session['email'] = email
-                # Redirect to home page
-                return redirect(url_for('home'))
-
+                'INSERT INTO account (username, password, email) VALUES (%s, %s, %s)', (username, password, email,))
+            conn.commit()
+            conn.close()
+            return redirect(url_for('login'))
     elif request.method == 'POST':
-        # Form is empty... (no POST data)
-        msg = 'Please fill out the form!'
-    # Show registration form with message (if any)
-    return render_template('signup.html', msg=msg)
+        return render_template('signup.html', message='Please fill out the form!')
+    return render_template('signup.html')
 
 
 @app.route('/profile')
 def profile():
-    # Check if user is loggedin
     if 'loggedin' in session:
-        # We need all the account info for the user so we can display it on the profile page
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('SELECT * FROM users WHERE user_id = %s',
-                       (session['id'],))
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute(
+            'SELECT * FROM account WHERE id = %s', (session['id'],))
         account = cursor.fetchone()
-        # Show the profile page with account info
+        conn.close()
+
         return render_template('profile.html', account=account)
-    # User is not loggedin redirect to login page
-    return redirect(url_for('login'))
+    else:
+        return redirect(url_for('login'))
 
 
 if __name__ == '__main__':
