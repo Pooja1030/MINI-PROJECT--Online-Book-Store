@@ -19,6 +19,14 @@ app.config['MYSQL_DB'] = 'bookstore'
 mysql = MySQL(app)
 
 
+# Homepage route
+@app.route('/home')
+def home():
+    # Add any logic you want for your homepage here
+    return render_template('home.html')
+
+
+
 @app.route('/shop')
 def shop():
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
